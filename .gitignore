@@ -1,0 +1,11 @@
+﻿# Ignorar archivos de compilación
+*.dll
+*.exe
+*.pdb
+*.obj
+*.bin
+*.suo
+*.log
+*.user
+*.vscode/
+*.vs/
