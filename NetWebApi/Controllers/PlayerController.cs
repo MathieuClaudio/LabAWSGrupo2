@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Model.Entities;
@@ -13,8 +14,13 @@ namespace NetWebApi.Controllers
     public class PlayerController : ControllerBase
     {
         protected readonly ApplicationDbContext _context;
+        private readonly IMapper _mapper;
 
-        public PlayerController(ApplicationDbContext context) { _context = context; }
+        public PlayerController(ApplicationDbContext context, IMapper mapper) 
+        { 
+            _context = context;
+            _mapper = mapper;
+        }
 
 
         /// <summary>
@@ -44,13 +50,15 @@ namespace NetWebApi.Controllers
         [HttpPost("CreatePlayer")]
         public async Task<ActionResult> CreatePlayer(PlayerPostDto playerPostDto)
         {
-            var player = new Player
-            {
-                FullName = playerPostDto.FullName,
-                Age = playerPostDto.Age,
-                Number = playerPostDto.Number,
-                ClubId = playerPostDto.ClubId
-            };
+            var player = _mapper.Map<Player>(playerPostDto);
+            //Cambiamos todas estas lineas de código por el AutoMapper
+            //var player = new Player
+            //{
+            //    FullName = playerPostDto.FullName,
+            //    Age = playerPostDto.Age,
+            //    Number = playerPostDto.Number,
+            //    ClubId = playerPostDto.ClubId
+            //};
 
             _context.Players.Add(player);
             await _context.SaveChangesAsync();

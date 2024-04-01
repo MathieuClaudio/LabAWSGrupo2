@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Model.Entities;
@@ -11,14 +12,20 @@ namespace NetWebApi.Controllers
     [ApiController]
     public class ClubController : ControllerBase
     {
-        protected readonly ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
+        private readonly IMapper _mapper;
 
-        public ClubController(ApplicationDbContext context) {  _context = context; }
+        public ClubController(ApplicationDbContext context, IMapper mapper)
+        {
+            _context = context;
+            _mapper = mapper;
+        }
 
 
         /// <summary>
         /// Obtener todos los Clubes
         /// </summary>
+        /// AutoMapper.AutoMapperMappingException: Error mapping types.
         /// <returns></returns>
         [HttpGet("GetAll")]
         public async Task<ActionResult<List<ClubDto>>> GetAll()
@@ -40,6 +47,7 @@ namespace NetWebApi.Controllers
             return Ok(clubDto);
         }
 
+
         /// <summary>
         /// Creando un Club
         /// </summary>
@@ -48,10 +56,7 @@ namespace NetWebApi.Controllers
         [HttpPost("CreateClub")]
         public async Task<ActionResult> CreateClub(ClubPostDto clubPostDto)
         {
-            var club = new Club
-            {
-                Name = clubPostDto.Name
-            };
+            var club = _mapper.Map<Club>(clubPostDto);
 
             _context.Add(club);
             await _context.SaveChangesAsync();
