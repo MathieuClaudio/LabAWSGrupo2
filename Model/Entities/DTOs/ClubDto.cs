@@ -9,7 +9,6 @@ namespace Model.Entities.DTOs
 {
     public class ClubDto
     {
-        public int Id { get; set; }
 
         // Nombre del Club
         public string Name { get; set; }

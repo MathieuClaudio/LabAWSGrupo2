@@ -17,13 +17,14 @@ namespace Repository
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
+            
         }
 
         public DbSet<Club> Clubs { get; set; }
-        public DbSet<Match> Matches { get; set; }
         public DbSet<Player> Players { get; set; }
-        public DbSet<Stadium> Stadiums { get; set; }
-        public DbSet<Tournament> Tournaments { get; set; }
+        //public DbSet<Match> Matches { get; set; }
+        //public DbSet<Stadium> Stadiums { get; set; }
+        //public DbSet<Tournament> Tournaments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

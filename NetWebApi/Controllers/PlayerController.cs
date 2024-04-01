@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Model.Entities;
 using Model.Entities.DTOs;
+using Repository;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace NetWebApi.Controllers
 {
@@ -9,25 +12,23 @@ namespace NetWebApi.Controllers
     [ApiController]
     public class PlayerController : ControllerBase
     {
-        private readonly ILogger<PlayerController> _logger;
+        protected readonly ApplicationDbContext _context;
 
-        public PlayerController(ILogger<PlayerController> logger)
+        public PlayerController(ApplicationDbContext context) { _context = context; }
+
+        [HttpGet("GetAll")]
+        public async Task<ActionResult<List<ClubDto>>> GetAll()
         {
-            _logger = logger;
-        }
+            var players = await _context.Players.ToListAsync();
 
-        [HttpGet("GetPlayers")]
-        public IEnumerable<PlayerDto> GetPlayers()
-        {
-            _logger.LogInformation("Obtener todos los jugadores");
-            return new List<PlayerDto>
-            {
-                new PlayerDto{Id=1, FullName="Claudio Mathieu", Age=35, Number=10, IdClub=1, CurrentClub=new Club{Id=1, Name="Club A"}},
-                new PlayerDto{Id=2, FullName="Nicolás Madeo", Age=26, Number=7, IdClub=2, CurrentClub=new Club{Id=2, Name="Club B"}},
-                new PlayerDto{Id=3, FullName="Emanuel Gonzalez", Age=25, Number=5, IdClub=1, CurrentClub=new Club{Id=1, Name="Club A"}}
-            };
-        }
+            var playerDto = players.Select(player => new PlayerDto{
+                FullName = player.FullName,
+                Age = player.Age,
+                Number = player.Number
+            }).ToList();
+            return Ok(playerDto);
 
+        }
 
     }
 }
