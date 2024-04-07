@@ -1,11 +1,10 @@
 using Repository;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using System.Reflection;
 using FluentValidation.AspNetCore;
 using FluentValidation;
 using Repository.Interfaces;
 using Repository.Repositories;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +17,12 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 //--------------Inyecciones------------------------
 builder.Services.AddScoped<IClubRepository, ClubRepository>();
+builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
+
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>(
+    x => new UnitOfWork(x.GetRequiredService<ApplicationDbContext>(),
+         x.GetRequiredService<IPlayerRepository>()
+    ));
 
 //--------------FluentValidation------------------------
 builder.Services.AddValidatorsFromAssemblyContaining<Program>();
