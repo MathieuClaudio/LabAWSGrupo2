@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Model.Entities;
-using Model.Entities.DTOs;
+using NetWebApi.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,8 +19,7 @@ namespace Repository.Configuration
             CreateMap<ClubDto, Club>();
             CreateMap<ClubPostDto, Club>();
 
-            // AutoMaper Player
-            CreateMap<PlayerPostDto, Player>();
+            
         }
     }
 }

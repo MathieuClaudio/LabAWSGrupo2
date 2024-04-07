@@ -16,7 +16,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 //--------------AutoMapper------------------------
 builder.Services.AddAutoMapper(typeof(Repository.Configuration.AutoMapperConfig));
 //builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
-
+builder.Services.AddScoped<IClubRepository, ClubRepository>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
