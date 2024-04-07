@@ -1,15 +1,18 @@
 ﻿using AutoMapper;
 using Model.Entities;
 using Repository.Interfaces;
+﻿using Microsoft.EntityFrameworkCore.Diagnostics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
+
 namespace Repository.Repositories
 {
-    public  class ClubRepository : IClubRepository
+    public class ClubRepository : IClubRepository
     {
         private readonly ApplicationDbContext _context;
 
@@ -23,13 +26,18 @@ namespace Repository.Repositories
             return _context.Clubs.Any(c => c.Id == id);
         }
 
-        public bool CreateClub(Club club)
+        public ICollection<Club> GetAll()
         {
-            _context.Add(club);
+            return _context.Clubs.ToList();
+        }
+
+        public bool CreateClub(Club newClub)
+        {
+            _context.Add(newClub);
             return Save();
         }
 
-        public ICollection<Club> GetAll()
+        public ICollection<Club> GetClubs()
         {
             return _context.Clubs.ToList();
         }

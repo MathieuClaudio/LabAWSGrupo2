@@ -16,8 +16,13 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 
 //--------------AutoMapper------------------------
+
 //builder.Services.AddAutoMapper(typeof(Repository.Configuration.MappingProfiles));
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
+
+
+
+//builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 builder.Services.AddScoped<IClubRepository, ClubRepository>();
 
 

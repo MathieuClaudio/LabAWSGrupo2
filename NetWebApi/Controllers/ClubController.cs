@@ -6,6 +6,8 @@ using Model.Entities;
 using NetWebApi.DTOs;
 using Repository;
 using Repository.Interfaces;
+using NetWebApi;
+
 
 namespace NetWebApi.Controllers
 {
@@ -22,23 +24,12 @@ namespace NetWebApi.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet]
+    
+        [HttpGet("GetAll")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Club>))]
         public IActionResult GetAll()
         {
             var clubs = _mapper.Map<List<ClubDto>>(_clubRepository.GetAll());
-
-            //// Mapea los clubes a ClubDto
-            //var clubDto = clubs.Select(club => new ClubDto
-            //{
-            //    Name = club.Name,
-            //    Players = club.Players.Select(player => new Player
-            //    {
-            //        FullName = player.FullName,
-            //        Age = player.Age,
-            //        Number = player.Number
-            //    }).ToList()
-            //}).ToList();
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -47,10 +38,10 @@ namespace NetWebApi.Controllers
         }
 
 
-        [HttpPost]
+        [HttpPost("CreateClub")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public IActionResult CreateClub(ClubPostDto newClub)
+        public IActionResult CreateClub(Club newClub)
         {
             if (newClub == null)
                 return BadRequest(ModelState);
@@ -70,16 +61,16 @@ namespace NetWebApi.Controllers
 
             var clubMap = _mapper.Map<Club>(newClub);
 
-            if (!_clubRepository.CreateClub(clubMap))
+            if (!_clubRepository.CreateClub(newClub))
             {
                 ModelState.AddModelError("", "No se pudo guardar");
-                return StatusCode(500, ModelState);
+                return StatusCode(6500, ModelState);
             }
 
             return Ok("Club creado con éxito");
         }
 
-       
+      
 
     }
 }

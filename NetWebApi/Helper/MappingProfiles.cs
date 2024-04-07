@@ -18,7 +18,7 @@ namespace Repository.Configuration
             CreateMap<ClubDto, Club>();
             CreateMap<ClubPostDto, Club>();
 
-            // AutoMaper Player
+
             
         }
     }

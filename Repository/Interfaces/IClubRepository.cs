@@ -1,9 +1,10 @@
-﻿using System;
+﻿using Model.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Model.Entities;
+
 
 namespace Repository.Interfaces
 {
@@ -11,7 +12,7 @@ namespace Repository.Interfaces
     {
         ICollection<Club> GetAll();
         Club GetClub(int id);
-        bool CreateClub(Club club);
+        bool CreateClub(Club newClub);
         bool ClubExists(int id);
 
     }
