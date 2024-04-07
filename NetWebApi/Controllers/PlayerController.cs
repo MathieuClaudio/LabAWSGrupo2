@@ -1,11 +1,11 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
 using Model.Entities;
 using NetWebApi.DTOs;
 using Repository;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Reflection;
+using Repository.Interfaces;
+using Microsoft.AspNetCore.JsonPatch;
+using Repository.Repositories;
 
 namespace NetWebApi.Controllers
 {
@@ -13,38 +13,26 @@ namespace NetWebApi.Controllers
     [ApiController]
     public class PlayerController : ControllerBase
     {
-        protected readonly ApplicationDbContext _context;
+        private readonly IPlayerRepository _playerRepository;
 
-        public PlayerController(ApplicationDbContext context) 
-        { 
-            _context = context;
-        }
-
-
-        /// <summary>
-        /// Obtener todos los Jugadores
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet("GetAll")]
-        public async Task<ActionResult<List<ClubDto>>> GetAll()
+        public PlayerController(IPlayerRepository playerRepository)
         {
-            var players = await _context.Players.ToListAsync();
-
-            var playerDto = players.Select(player => new PlayerDto{
-                FullName = player.FullName,
-                Age = player.Age,
-                Number = player.Number
-            }).ToList();
-            return Ok(playerDto);
-
+            _playerRepository = playerRepository;
         }
 
-        /// <summary>
-        /// Creando un Jugador
-        /// Nota: se debe conocer el ClubId (es obligatorio)
-        /// </summary>
-        /// <param name="playerPostDto"></param>
-        /// <returns></returns>
+        [HttpGet("GetAll")]
+        public async Task<ActionResult<List<PlayerDto>>> GetAll()
+        {
+            var players = await _playerRepository.GetAllPlayersAsync();
+            var playerDtos = players.Select(p => new PlayerDto
+            {
+                FullName = p.FullName,
+                Age = p.Age,
+                Number = p.Number
+            }).ToList();
+            return Ok(playerDtos);
+        }
+
         [HttpPost("CreatePlayer")]
         public async Task<ActionResult> CreatePlayer(PlayerPostDto playerPostDto)
         {
@@ -56,12 +44,39 @@ namespace NetWebApi.Controllers
                 ClubId = playerPostDto.ClubId
             };
 
-            _context.Players.Add(player);
-            await _context.SaveChangesAsync();
-            return Ok("El jugador se creo correctamente");
-
+            await _playerRepository.CreatePlayerAsync(player);
+            return Ok("El jugador se creó correctamente");
         }
 
+        [HttpPut("UpdatePlayer/{id}")]
+        public async Task<ActionResult> UpdatePlayer(int id, PlayerPostDto playerPostDto)
+        {
+            var player = await _playerRepository.GetPlayerByIdAsync(id);
+            if (player == null)
+            {
+                return NotFound();
+            }
 
+            player.FullName = playerPostDto.FullName;
+            player.Age = playerPostDto.Age;
+            player.Number = playerPostDto.Number;
+            player.ClubId = playerPostDto.ClubId;
+
+            await _playerRepository.UpdatePlayerAsync(player);
+            return Ok("El jugador se actualizó correctamente");
+        }
+
+        [HttpDelete("DeletePlayer/{id}")]
+        public async Task<ActionResult> DeletePlayer(int id)
+        {
+            var player = await _playerRepository.GetPlayerByIdAsync(id);
+            if (player == null)
+            {
+                return NotFound();
+            }
+
+            await _playerRepository.DeletePlayerAsync(id);
+            return Ok("El jugador se eliminó correctamente");
+        }
     }
 }
