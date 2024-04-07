@@ -4,6 +4,8 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 using FluentValidation.AspNetCore;
 using FluentValidation;
+using Repository.Interfaces;
+using Repository.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +15,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
         b => b.MigrationsAssembly("Repository")));
+
+//--------------Inyecciones------------------------
+builder.Services.AddScoped<IClubRepository, ClubRepository>();
 
 //--------------FluentValidation------------------------
 builder.Services.AddValidatorsFromAssemblyContaining<Program>();

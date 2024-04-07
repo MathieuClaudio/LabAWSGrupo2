@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NetWebApi.DTOs
+namespace Repository
 {
     public class PlayerDto
     {
@@ -18,6 +18,5 @@ namespace NetWebApi.DTOs
 
         // Número
         public int Number { get; set; }
-
     }
 }

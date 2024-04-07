@@ -10,7 +10,6 @@ namespace NetWebApi.DTOs
     public class ClubPostDto
     {
         // Nombre del Club
-        [StringLength(maximumLength:150)]
         public string Name { get; set; }
     }
 }
