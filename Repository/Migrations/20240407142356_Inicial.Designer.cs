@@ -11,8 +11,8 @@ using Repository;
 namespace Repository.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240402025806_Thirdly_DataSeed_Players")]
-    partial class Thirdly_DataSeed_Players
+    [Migration("20240407142356_Inicial")]
+    partial class Inicial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
