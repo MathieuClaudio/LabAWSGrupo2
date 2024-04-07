@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Model.Entities;
-using Model.Entities.DTOs;
+using NetWebApi.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,18 +9,17 @@ using System.Threading.Tasks;
 
 namespace Repository.Configuration
 {
-    public class AutoMapperConfig : Profile
+    public class MappingProfiles : Profile
     {
-        public AutoMapperConfig()
+        public MappingProfiles()
         {
             // AutoMapper Club
-            CreateMap<Club, ClubDto>()
-                .ForMember(dest => dest.Name, org => org.MapFrom(src => src.Name));
+            CreateMap<Club, ClubDto>();
             CreateMap<ClubDto, Club>();
             CreateMap<ClubPostDto, Club>();
 
             // AutoMaper Player
-            CreateMap<PlayerPostDto, Player>();
+            
         }
     }
 }

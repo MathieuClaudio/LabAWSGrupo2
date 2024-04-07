@@ -3,8 +3,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Model.Entities;
-using Model.Entities.DTOs;
+using NetWebApi.DTOs;
 using Repository;
+using Repository.Interfaces;
 
 namespace NetWebApi.Controllers
 {
@@ -12,80 +13,73 @@ namespace NetWebApi.Controllers
     [ApiController]
     public class ClubController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IClubRepository _clubRepository;
         private readonly IMapper _mapper;
 
-        public ClubController(ApplicationDbContext context, IMapper mapper)
+        public ClubController(IClubRepository context, IMapper mapper)
         {
-            _context = context;
+            _clubRepository = context;
             _mapper = mapper;
         }
 
-
-        /// <summary>
-        /// Obtener todos los Clubes
-        /// </summary>
-        /// AutoMapper.AutoMapperMappingException: Error mapping types.
-        /// <returns></returns>
-        [HttpGet("GetAll")]
-        public async Task<ActionResult<List<ClubDto>>> GetAll()
+        [HttpGet]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<Club>))]
+        public IActionResult GetAll()
         {
-            var clubs = await _context.Clubs.Include(c => c.Players).ToListAsync();
+            var clubs = _mapper.Map<List<ClubDto>>(_clubRepository.GetAll());
 
-            // Mapea los clubes a ClubDto
-            var clubDto = clubs.Select(club => new ClubDto
-            {
-                Name = club.Name,
-                Players = club.Players.Select(player => new Player
-                {
-                    FullName = player.FullName,
-                    Age = player.Age,
-                    Number = player.Number
-                }).ToList()
-            }).ToList();
+            //// Mapea los clubes a ClubDto
+            //var clubDto = clubs.Select(club => new ClubDto
+            //{
+            //    Name = club.Name,
+            //    Players = club.Players.Select(player => new Player
+            //    {
+            //        FullName = player.FullName,
+            //        Age = player.Age,
+            //        Number = player.Number
+            //    }).ToList()
+            //}).ToList();
 
-            return Ok(clubDto);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            return Ok(clubs);
         }
 
 
-        /// <summary>
-        /// Creando un Club
-        /// </summary>
-        /// <param name="clubPostDto"></param>
-        /// <returns></returns>
-        [HttpPost("CreateClub")]
-        public async Task<ActionResult> CreateClub(ClubPostDto clubPostDto)
+        [HttpPost]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult CreateClub(ClubPostDto newClub)
         {
-            var club = _mapper.Map<Club>(clubPostDto);
+            if (newClub == null)
+                return BadRequest(ModelState);
 
-            _context.Add(club);
-            await _context.SaveChangesAsync();
-            return Ok();
-        }
+            var club = _clubRepository.GetAll()
+                .Where(c => c.Name.Trim().ToUpper() == newClub.Name.TrimEnd().ToUpper())
+                .FirstOrDefault();
 
-        /// <summary>
-        /// Creando varios Clubes
-        /// </summary>
-        /// <param name="clubPostDto"></param>
-        /// <returns></returns>
-        [HttpPost("CreateClubs")]
-        public async Task<ActionResult> CreateClubs(ClubPostDto[] clubPostDto)
-        {
-            if (clubPostDto == null || clubPostDto.Length == 0)
+            if (club != null)
             {
-                return BadRequest("Datos NO válidos para crear clubes.");
+                ModelState.AddModelError("", "El Club ya existe");
+                return StatusCode(422, ModelState);
             }
 
-            // Convertir cada ClubPostDto en un Club y agregarlos al contexto
-            var clubsToAdd = clubPostDto.Select(dto => new Club
-            {
-                Name = dto.Name
-            });
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
-            _context.AddRange(clubsToAdd); // Debes agregar 'club' al contexto en lugar de 'clubPostDto'
-            await _context.SaveChangesAsync();
-            return Ok("Los clubes se han creado correctamente.");
+            var clubMap = _mapper.Map<Club>(newClub);
+
+            if (!_clubRepository.CreateClub(clubMap))
+            {
+                ModelState.AddModelError("", "No se pudo guardar");
+                return StatusCode(500, ModelState);
+            }
+
+            return Ok("Club creado con éxito");
         }
+
+       
 
     }
 }

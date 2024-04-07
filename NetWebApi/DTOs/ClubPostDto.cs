@@ -1,19 +1,16 @@
-﻿using Model.Entities;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Model.Entities.DTOs
+namespace NetWebApi.DTOs
 {
-    public class ClubDto
+    public class ClubPostDto
     {
-
         // Nombre del Club
+        [StringLength(maximumLength:150)]
         public string Name { get; set; }
-
-        // Listado de Jugadores
-        public List<Player> Players { get; set; }
     }
 }

@@ -2,6 +2,8 @@ using Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
+using Repository.Interfaces;
+using Repository.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,8 +16,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 
 //--------------AutoMapper------------------------
-builder.Services.AddAutoMapper(typeof(Repository.Configuration.AutoMapperConfig));
-//builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
+//builder.Services.AddAutoMapper(typeof(Repository.Configuration.MappingProfiles));
+builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
+builder.Services.AddScoped<IClubRepository, ClubRepository>();
 
 
 builder.Services.AddControllers();
