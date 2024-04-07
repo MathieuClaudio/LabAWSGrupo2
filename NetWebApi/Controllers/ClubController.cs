@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Model.Entities;
-using Model.Entities.DTOs;
+using NetWebApi.DTOs;
 using Repository;
 
 namespace NetWebApi.Controllers
@@ -13,12 +13,10 @@ namespace NetWebApi.Controllers
     public class ClubController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
-        private readonly IMapper _mapper;
 
-        public ClubController(ApplicationDbContext context, IMapper mapper)
+        public ClubController(ApplicationDbContext context)
         {
             _context = context;
-            _mapper = mapper;
         }
 
 
@@ -56,11 +54,18 @@ namespace NetWebApi.Controllers
         [HttpPost("CreateClub")]
         public async Task<ActionResult> CreateClub(ClubPostDto clubPostDto)
         {
-            var club = _mapper.Map<Club>(clubPostDto);
+            if (clubPostDto == null)
+            {
+                return BadRequest("Datos NO válidos para crear clubes.");
+            }
 
+            var club = new Club
+            {
+                Name = clubPostDto.Name
+            };
             _context.Add(club);
             await _context.SaveChangesAsync();
-            return Ok();
+            return Ok("Club creado");
         }
 
         /// <summary>
@@ -76,13 +81,12 @@ namespace NetWebApi.Controllers
                 return BadRequest("Datos NO válidos para crear clubes.");
             }
 
-            // Convertir cada ClubPostDto en un Club y agregarlos al contexto
             var clubsToAdd = clubPostDto.Select(dto => new Club
             {
                 Name = dto.Name
             });
 
-            _context.AddRange(clubsToAdd); // Debes agregar 'club' al contexto en lugar de 'clubPostDto'
+            _context.AddRange(clubsToAdd);
             await _context.SaveChangesAsync();
             return Ok("Los clubes se han creado correctamente.");
         }

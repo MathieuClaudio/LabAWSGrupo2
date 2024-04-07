@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Model.Entities.DTOs
+namespace NetWebApi.DTOs
 {
     public class PlayerPostDto
     {

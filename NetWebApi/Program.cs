@@ -2,6 +2,8 @@ using Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
+using FluentValidation.AspNetCore;
+using FluentValidation;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,10 +14,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
         b => b.MigrationsAssembly("Repository")));
 
-
-//--------------AutoMapper------------------------
-builder.Services.AddAutoMapper(typeof(Repository.Configuration.AutoMapperConfig));
-//builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
+//--------------FluentValidation------------------------
+builder.Services.AddValidatorsFromAssemblyContaining<Program>();
+builder.Services.AddFluentValidationAutoValidation();
 
 
 builder.Services.AddControllers();

@@ -5,15 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Model.Entities.DTOs
+namespace NetWebApi.DTOs
 {
-    public class ClubDto
+    public class StadiumDto
     {
-
-        // Nombre del Club
+        // Nombre del Estadio
         public string Name { get; set; }
-
-        // Listado de Jugadores
-        public List<Player> Players { get; set; }
     }
 }

@@ -15,7 +15,6 @@ namespace Repository.Configuration
     {
         public void Configure(EntityTypeBuilder<Club> builder)
         {
-            // modelBuilder.Entity<Club>().HasKey(c => c.Id); // Existe por convención
             builder.Property(c => c.Name).IsRequired();
 
             // Seedyng
