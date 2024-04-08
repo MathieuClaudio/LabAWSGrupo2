@@ -1,15 +1,15 @@
-﻿using Model.Entities;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Model.Entities.DTOs
+namespace NetWebApi.DTOs
 {
-    public class StadiumDto
+    public class ClubPostDto
     {
-        // Nombre del Estadio
+        // Nombre del Club
         public string Name { get; set; }
     }
 }

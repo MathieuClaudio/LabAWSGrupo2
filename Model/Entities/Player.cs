@@ -22,8 +22,7 @@ namespace Model.Entities
         public int Number { get; set; }
 
         // Club al que pertenece
-        [ForeignKey(nameof(Club))]
-        public int IdClub { get; set; }
-        public Club CurrentClub { get; set;}
+        public int ClubId { get; set; } // Esta por convención Entity+Id. No hace falta [ForeignKey(nameof(Club))]
+        public Club Club { get; set;}
     }
 }

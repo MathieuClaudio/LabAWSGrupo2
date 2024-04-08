@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Model.Entities.DTOs
+namespace Repository
 {
     public class PlayerDto
     {
@@ -19,10 +19,5 @@ namespace Model.Entities.DTOs
 
         // Número
         public int Number { get; set; }
-
-        // Club al que pertenece
-        [ForeignKey(nameof(Club))]
-        public int IdClub { get; set; }
-        public Club CurrentClub { get; set; }
     }
 }

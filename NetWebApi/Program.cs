@@ -1,19 +1,39 @@
 using Repository;
 using Microsoft.EntityFrameworkCore;
+using FluentValidation.AspNetCore;
+using FluentValidation;
+using Repository.Interfaces;
+using Repository.Repositories;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+//--------------SqlServer------------------------
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
+        b => b.MigrationsAssembly("Repository")));
+
+//--------------Inyecciones------------------------
+builder.Services.AddScoped<IClubRepository, ClubRepository>();
+builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
+
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>(
+    x => new UnitOfWork(x.GetRequiredService<ApplicationDbContext>(),
+         x.GetRequiredService<IPlayerRepository>()
+    ));
+
+//--------------FluentValidation------------------------
+builder.Services.AddValidatorsFromAssemblyContaining<Program>();
+builder.Services.AddFluentValidationAutoValidation();
+
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-//--------------SqlServer------------------------
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
-        b => b.MigrationsAssembly("Repository")));
 
 
 var app = builder.Build();
