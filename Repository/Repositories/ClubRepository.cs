@@ -13,51 +13,39 @@ using System.Threading.Tasks;
 
 namespace Repository.Repositories
 {
-    public class ClubRepository : IClubRepository
+    public class ClubRepository : Repository<Club>, IClubRepository
     {
-        private readonly ApplicationDbContext _context;
-        private readonly IServiceProvider _serviceProvider;
-
-        public ClubRepository(ApplicationDbContext context, IServiceProvider serviceProvider) 
+        public ClubRepository(ApplicationDbContext context) : base(context)
         {
-            _context = context;
-            _serviceProvider = serviceProvider;
         }
 
-        public override async Task<List<Club>> GetAll()
+        public async Task<List<Club>> GetAll()
         {
-            return await _context.Clubs.Include(club => club.Players).ToListAsync();
+            var result = await _context.Clubs.ToListAsync();
+            return result;
         }
 
-        public override async Task<Club> GetClubById(int id)
+        public async Task<Club> GetId(int id)
         {
-            var club = await _context.Clubs.FirstOrDefaultAsync(club => club.Id == id);
-
-            return club; 
+            var result = await _context.Clubs.FirstOrDefaultAsync(club => club.Id == id);
+            return result;
         }
 
-        public override async Task<Club> GetClubByName(string name)
-        {
-            var club = await _context.Clubs.FirstOrDefaultAsync(club => club.Name == name);
-
-            return club;
-        }
-
-        public override async Task<Club> InsertClub(Club club)
+        public async Task<Club> Insert(Club club)
         {
             EntityEntry<Club> insertClub = await _context.Clubs.AddAsync(club);
             await _context.SaveChangesAsync();
             return insertClub.Entity;
         }
 
-        // Falta que actualice o agregue nuevos jugadores
-        public override async Task UpdateClub(Club club)
+        public async Task<Club> Update(Club club)
         {
             _context.Entry(club).State = EntityState.Modified;
             await _context.SaveChangesAsync();
+            return club;
         }
 
-        public override async Task DeleteClub(int id)
+        public async Task<Club> Delete(int id)
         {
             var club = await _context.Clubs.FindAsync(id);
             if (club == null)
@@ -67,31 +55,8 @@ namespace Repository.Repositories
 
             _context.Clubs.Remove(club);
             await _context.SaveChangesAsync();
-        }
+            return club;
 
-
-        public override async Task<Club> UpdateClubPatch(int id, JsonPatchDocument<Club> patchDoc)
-        {
-            var club = await _context.Clubs.FindAsync(id);
-            if (club == null)
-            {
-                throw new InvalidOperationException("Club no encontrado.");
-            }
-
-            patchDoc.ApplyTo(club);
-
-            // Validar los cambios
-            var validationResults = new List<ValidationResult>();
-            var context = new ValidationContext(club);
-            Validator.TryValidateObject(club, context, validationResults, true);
-
-            if (validationResults.Count > 0)
-            {
-                throw new InvalidOperationException("Datos de actualización no válidos.");
-            }
-
-            await _context.SaveChangesAsync();
-            return club; // Devolvemos el club actualizado
         }
 
     }

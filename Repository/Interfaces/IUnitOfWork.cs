@@ -9,6 +9,7 @@ namespace Repository.Interfaces
     public interface IUnitOfWork : IDisposable
     {
         public IPlayerRepository PlayerRepository { get; }
+        public IClubRepository ClubRepository { get; }
 
         Task<int> Save();
     }

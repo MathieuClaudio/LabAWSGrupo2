@@ -10,12 +10,14 @@ namespace Repository
     public class UnitOfWork : IUnitOfWork
     {
         public IPlayerRepository PlayerRepository { get; }
+        public IClubRepository ClubRepository { get; }
         private readonly ApplicationDbContext _context;
 
-        public UnitOfWork(ApplicationDbContext context, IPlayerRepository playerRepository)
+        public UnitOfWork(ApplicationDbContext context, IPlayerRepository playerRepository, IClubRepository clubRepository)
         {
             _context = context;
             PlayerRepository = playerRepository;
+            ClubRepository = clubRepository;
         }
 
         public async Task<int> Save()

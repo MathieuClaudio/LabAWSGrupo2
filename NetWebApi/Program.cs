@@ -20,8 +20,10 @@ builder.Services.AddScoped<IClubRepository, ClubRepository>();
 builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>(
-    x => new UnitOfWork(x.GetRequiredService<ApplicationDbContext>(),
-         x.GetRequiredService<IPlayerRepository>()
+    x => new UnitOfWork(
+        x.GetRequiredService<ApplicationDbContext>(),
+        x.GetRequiredService<IPlayerRepository>(),
+        x.GetRequiredService<IClubRepository>()
     ));
 
 //--------------FluentValidation------------------------

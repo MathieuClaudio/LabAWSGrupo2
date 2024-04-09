@@ -26,7 +26,7 @@ namespace NetWebApi.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("GetAllPlayers")]
-        public async Task<ActionResult<List<ClubDto>>> GetAllPlayers()
+        public async Task<ActionResult<List<PlayerDto>>> GetAllPlayers()
         {
             var players = await _unitOfWork.PlayerRepository.GetAll();
 
