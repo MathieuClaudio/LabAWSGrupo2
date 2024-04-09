@@ -9,7 +9,7 @@ namespace NetWebApi.DTOs
 {
     public class StadiumDto
     {
-        // Nombre del Estadio
+        public int Id { get; set; }
         public string Name { get; set; }
     }
 }

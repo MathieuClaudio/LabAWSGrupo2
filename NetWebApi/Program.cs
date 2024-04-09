@@ -18,12 +18,14 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 //--------------Inyecciones------------------------
 builder.Services.AddScoped<IClubRepository, ClubRepository>();
 builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
+builder.Services.AddScoped<IStadiumRepository, StadiumRepository>();
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>(
     x => new UnitOfWork(
         x.GetRequiredService<ApplicationDbContext>(),
         x.GetRequiredService<IPlayerRepository>(),
-        x.GetRequiredService<IClubRepository>()
+        x.GetRequiredService<IClubRepository>(),
+        x.GetRequiredService<IStadiumRepository>()
     ));
 
 //--------------FluentValidation------------------------

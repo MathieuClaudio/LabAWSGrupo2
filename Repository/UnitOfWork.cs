@@ -11,13 +11,19 @@ namespace Repository
     {
         public IPlayerRepository PlayerRepository { get; }
         public IClubRepository ClubRepository { get; }
+        public IStadiumRepository StadiumRepository { get; }
         private readonly ApplicationDbContext _context;
 
-        public UnitOfWork(ApplicationDbContext context, IPlayerRepository playerRepository, IClubRepository clubRepository)
+        public UnitOfWork(ApplicationDbContext context, 
+                            IPlayerRepository playerRepository, 
+                            IClubRepository clubRepository,
+                            IStadiumRepository stadiumRepository
+            )
         {
             _context = context;
             PlayerRepository = playerRepository;
             ClubRepository = clubRepository;
+            StadiumRepository = stadiumRepository;
         }
 
         public async Task<int> Save()

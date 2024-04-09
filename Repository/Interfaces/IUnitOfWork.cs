@@ -10,6 +10,7 @@ namespace Repository.Interfaces
     {
         public IPlayerRepository PlayerRepository { get; }
         public IClubRepository ClubRepository { get; }
+        public IStadiumRepository StadiumRepository { get; }
 
         Task<int> Save();
     }
