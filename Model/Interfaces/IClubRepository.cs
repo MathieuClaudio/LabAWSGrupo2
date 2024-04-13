@@ -10,10 +10,11 @@ namespace Repository.Interfaces
 {
     public interface IClubRepository
     {
-        ICollection<Club> GetAll();
-        Club GetClub(int id);
-        bool CreateClub(Club newClub);
-        bool ClubExists(int id);
+        Task<List<Club>> GetAll();
+        Task<Club> GetId(int id);
+        Task<Club> Insert(Club club);
+        Task<Club> Update(Club club);
+        Task<Club> Delete(int id);
 
     }
 }

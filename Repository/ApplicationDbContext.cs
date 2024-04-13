@@ -33,17 +33,8 @@ namespace Repository
             base.OnModelCreating(modelBuilder);
             // Aplicando las configuraciones API Fluent que están en la carpeta Configuration 
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-            /*
-                // API Fluent Club
-                modelBuilder.Entity<Club>().HasKey(c => c.Id); // Existe por convención
-                modelBuilder.Entity<Club>().Property(c => c.Name).IsRequired().HasMaxLength(150);
-
-                // API Fluent Player
-                modelBuilder.Entity<Player>().HasKey(p => p.Id); // Existe por convención
-                modelBuilder.Entity<Player>().Property(p => p.FullName).IsRequired().HasMaxLength(150);
-                modelBuilder.Entity<Player>().Property(p => p.Age).IsRequired().HasPrecision(2, 0); // 0 a 99
-                modelBuilder.Entity<Player>().Property(p => p.Number).IsRequired().HasPrecision(2, 0);
-            */
+           
+            
 
         }
 
