@@ -13,6 +13,7 @@ namespace Model.Entities
         public IClubRepository ClubRepository { get; }
         public IStadiumRepository StadiumRepository { get; }
         public IUserRepository UserRepository { get; }
+        public IMatchRepository MatchRepository { get; }
 
         Task<int> Save();
     }

@@ -17,36 +17,6 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 
-// Add services to the container.
-
-//--------------SqlServer------------------------
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
-        b => b.MigrationsAssembly("Repository")));
-
-//--------------Inyecciones----------------------------------------
-builder.Services.AddScoped<IClubRepository, ClubRepository>();
-builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
-builder.Services.AddScoped<IStadiumRepository, StadiumRepository>();
-builder.Services.AddScoped<IUserRepository, UserRepository>();
-
-builder.Services.AddScoped<IUnitOfWork, UnitOfWork>(
-    x => new UnitOfWork(
-        x.GetRequiredService<ApplicationDbContext>(),
-        x.GetRequiredService<IPlayerRepository>(),
-        x.GetRequiredService<IClubRepository>(),
-        x.GetRequiredService<IStadiumRepository>(),
-        x.GetRequiredService<IUserRepository>()
-    ));
-//----------------------------------------------------------------
-
-//--------------FluentValidation----------------------------------
-builder.Services.AddValidatorsFromAssemblyContaining<Program>();
-builder.Services.AddFluentValidationAutoValidation();
-//----------------------------------------------------------------
-
-
-
 //---------------------------------------JWT Swagger-----------------------------
 builder.Services.AddSwaggerGen(option =>
 {
@@ -91,6 +61,36 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 
     };
 });
+//----------------------------------------------------------------
+
+// Add services to the container.
+
+//--------------SqlServer------------------------
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
+        b => b.MigrationsAssembly("Repository")));
+
+//--------------Inyecciones----------------------------------------
+builder.Services.AddScoped<IClubRepository, ClubRepository>();
+builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
+builder.Services.AddScoped<IStadiumRepository, StadiumRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IMatchRepository, MatchRepository>();
+
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>(
+    x => new UnitOfWork(
+        x.GetRequiredService<ApplicationDbContext>(),
+        x.GetRequiredService<IPlayerRepository>(),
+        x.GetRequiredService<IClubRepository>(),
+        x.GetRequiredService<IStadiumRepository>(),
+        x.GetRequiredService<IUserRepository>(),
+        x.GetRequiredService<IMatchRepository>()
+    ));
+//----------------------------------------------------------------
+
+//--------------FluentValidation----------------------------------
+builder.Services.AddValidatorsFromAssemblyContaining<Program>();
+builder.Services.AddFluentValidationAutoValidation();
 //----------------------------------------------------------------
 
 

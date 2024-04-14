@@ -1,18 +1,9 @@
 ﻿using Model.Entities;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NetWebApi.DTOs
 {
-    public class MatchDto
+    public class MatchPostDto
     {
-        public int Id { get; set; }
-
-        // fecha y hora del partido
         public DateTime MatchDate { get; set; }
 
         // Equipo A
@@ -20,11 +11,9 @@ namespace NetWebApi.DTOs
 
         // Equipo B
         public int IdClubB { get; set; }
-        public Club Club { get; set; }
 
         // Estadio del evento
         public int IdStadium { get; set; }
-        public Stadium Venue { get; set; }
 
         // Resultado del evento
         public string Result { get; set; }

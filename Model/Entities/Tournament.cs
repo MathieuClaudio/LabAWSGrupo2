@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Model.Entities
 {
@@ -14,11 +15,10 @@ namespace Model.Entities
 
         // Nombre del Torneo (Copa Argentina)
         public string Name { get; set; }
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
+        public Date StartDate { get; set; }
+        public Date EndDate { get; set; }
 
         // Tabla de posición
-        [ForeignKey(nameof(Standing))]
         public int IdStanding { get; set; }
         public Standing Standing { get; set; } // Relación de composición
 
