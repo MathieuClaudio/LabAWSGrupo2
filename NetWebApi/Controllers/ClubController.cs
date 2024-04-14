@@ -6,12 +6,14 @@ using NetWebApi.DTOs;
 using Repository;
 using Microsoft.AspNetCore.JsonPatch;
 using Repository.Repositories;
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace NetWebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ClubController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -28,6 +30,7 @@ namespace NetWebApi.Controllers
         /// AutoMapper.AutoMapperMappingException: Error mapping types.
         /// <returns></returns>
         [HttpGet("GetAll")]
+        [AllowAnonymous]
         public async Task<ActionResult<List<ClubDto>>> GetAll()
         {
             var clubs = await _unitOfWork.ClubRepository.GetAll();

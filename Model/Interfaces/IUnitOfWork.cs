@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Model.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,6 +12,7 @@ namespace Model.Entities
         public IPlayerRepository PlayerRepository { get; }
         public IClubRepository ClubRepository { get; }
         public IStadiumRepository StadiumRepository { get; }
+        public IUserRepository UserRepository { get; }
 
         Task<int> Save();
     }
