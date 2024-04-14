@@ -10,6 +10,7 @@ namespace Repository
 {
     public class PlayerDto
     {
+        public int Id { get; set; }
         // Nombre completo
         public string FullName { get; set; }
 

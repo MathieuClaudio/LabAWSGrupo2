@@ -5,11 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NetWebApi.DTOs
+namespace Model.Interfaces
 {
-    public class StadiumDto
+    public interface IUserRepository : IRepository<User>
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
+        Task<User> GetByNamePassword(string user, string password);
     }
 }

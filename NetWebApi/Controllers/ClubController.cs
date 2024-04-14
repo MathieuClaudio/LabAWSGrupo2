@@ -1,23 +1,26 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Model.Entities;
 using NetWebApi.DTOs;
 using Repository;
-using System.Reflection;
-using Repository.Interfaces;
 using Microsoft.AspNetCore.JsonPatch;
+using Repository.Repositories;
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace NetWebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ClubController : ControllerBase
     {
-        private readonly IClubRepository _clubRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public ClubController(IClubRepository clubRepository)
+        public ClubController(IUnitOfWork unitOfWork)
         {
-            _clubRepository = clubRepository;
+            _unitOfWork = unitOfWork;
         }
 
 
@@ -27,21 +30,16 @@ namespace NetWebApi.Controllers
         /// AutoMapper.AutoMapperMappingException: Error mapping types.
         /// <returns></returns>
         [HttpGet("GetAll")]
+        [AllowAnonymous]
         public async Task<ActionResult<List<ClubDto>>> GetAll()
         {
-            var clubs = await _clubRepository.GetAll();
+            var clubs = await _unitOfWork.ClubRepository.GetAll();
 
             // Mapea los clubes a ClubDto
             var clubDto = clubs.Select(club => new ClubDto
             {
-                Name = club.Name,
-                Players = club.Players.Select(player => new Player
-                {
-                    FullName = player.FullName,
-                    Age = player.Age,
-                    Number = player.Number,
-                    ClubId = player.Id
-                }).ToList()
+                Id = club.Id,
+                Name = club.Name
             }).ToList();
 
             return Ok(clubDto);
@@ -50,7 +48,7 @@ namespace NetWebApi.Controllers
         [HttpGet("GetClubById/{clubId}")]
         public async Task<ActionResult<ClubDto>> GetClubById(int clubId)
         {
-            var club = await _clubRepository.GetClubById(clubId);
+            var club = await _unitOfWork.ClubRepository.GetId(clubId);
 
             if (club == null)
             {
@@ -61,7 +59,6 @@ namespace NetWebApi.Controllers
             var clubDto = new ClubDto
             {
                 Name = club.Name,
-                // Si agrego la lista de player falla
                 //Players = club.Players.Select(player => new Player
                 //{
                 //    FullName = player.FullName,
@@ -74,39 +71,6 @@ namespace NetWebApi.Controllers
             return Ok(clubDto);
         }
 
-        [HttpGet("GetClubByName/{name}")]
-        public async Task<ActionResult<ClubDto>> GetClubByName(string name)
-        {
-            
-
-            if (name == null)
-            {
-                return NotFound(); // Devuelve un 404 si el club no se encuentra
-            }
-
-            var club = await _clubRepository.GetClubByName(name);
-
-            if (club == null)
-            {
-                return NotFound(); // Devuelve un 404 si el club no se encuentra
-            }
-
-            // Mapea el club a ClubDto
-            var clubDto = new ClubDto
-            {
-                Name = club.Name,
-                // Si agrego la lista de player falla
-                //Players = club.Players.Select(player => new Player
-                //{
-                //    FullName = player.FullName,
-                //    Age = player.Age,
-                //    Number = player.Number,
-                //    ClubId = player.Id
-                //}).ToList()
-            };
-
-            return Ok(clubDto);
-        }
 
         /// <summary>
         /// Creando un Club
@@ -125,20 +89,21 @@ namespace NetWebApi.Controllers
             {
                 Name = clubPostDto.Name
             };
-            await _clubRepository.InsertClub(club);
+            await _unitOfWork.ClubRepository.Insert(club);
+            var result = await _unitOfWork.Save();
             return Ok("Club creado");
         }
 
 
-        [HttpPut("UpdateClub/{id}")]
-        public async Task<ActionResult> UpdateClub(int id, ClubUpdateDto clubUpdateDto)
+        [HttpPut("UpdateClub/{clubId}")]
+        public async Task<ActionResult> UpdateClub(int clubId, ClubUpdateDto clubUpdateDto)
         {
-            if (clubUpdateDto == null || id != clubUpdateDto.Id)
+            if (clubUpdateDto == null || clubId != clubUpdateDto.Id)
             {
                 return BadRequest("Datos no válidos para actualizar el club.");
             }
 
-            var existingClub = await _clubRepository.GetClubById(id);
+            var existingClub = await _unitOfWork.ClubRepository.GetId(clubId);
 
             if (existingClub == null)
             {
@@ -147,21 +112,20 @@ namespace NetWebApi.Controllers
 
             // Actualizar los datos del club
             existingClub.Name = clubUpdateDto.Name;
-            // Aquí puedes manejar la actualización de jugadores si es necesario
 
             // Guardar los cambios en la base de datos
-            await _clubRepository.UpdateClub(existingClub);
+            await _unitOfWork.ClubRepository.Update(existingClub);
 
             return Ok("Club actualizado correctamente.");
         }
 
 
-        [HttpDelete("DeleteClub/{id}")]
-        public async Task<ActionResult> DeleteClub(int id)
+        [HttpDelete("DeleteClub/{clubId}")]
+        public async Task<ActionResult> DeleteClub(int clubId)
         {
             try
             {
-                await _clubRepository.DeleteClub(id);
+                await _unitOfWork.ClubRepository.Delete(clubId);
                 return Ok("Club eliminado correctamente.");
             }
             catch (Exception ex)
@@ -177,31 +141,6 @@ namespace NetWebApi.Controllers
                 }
             }
         }
-
-        [HttpPatch("UpdateClubPatch/{id}")]
-        public async Task<IActionResult> UpdateClubPatch(int id, [FromBody] JsonPatchDocument<Club> patchDoc)
-        {
-            if (patchDoc == null)
-            {
-                return BadRequest("Datos de actualización no proporcionados.");
-            }
-
-            try
-            {
-                var updatedClub = await _clubRepository.UpdateClubPatch(id, patchDoc);
-                return Ok(updatedClub);
-            }
-            catch (InvalidOperationException ex)
-            {
-                return NotFound(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex.Message);
-            }
-        }
-
-
 
     }
 }

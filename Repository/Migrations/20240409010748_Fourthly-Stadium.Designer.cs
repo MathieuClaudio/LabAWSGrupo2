@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Repository;
 
@@ -10,9 +11,11 @@ using Repository;
 namespace Repository.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240409010748_Fourthly-Stadium")]
+    partial class FourthlyStadium
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -342,57 +345,6 @@ namespace Repository.Migrations
                         {
                             Id = 5,
                             Name = "Diego Armando Maradona"
-                        });
-                });
-
-            modelBuilder.Entity("Model.Entities.User", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
-
-                    b.Property<string>("UserName")
-                        .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Users");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Claudio",
-                            Password = "123",
-                            UserName = "claudio"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Nicolás",
-                            Password = "123",
-                            UserName = "nicolas"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Emanuel",
-                            Password = "123",
-                            UserName = "emanuel"
                         });
                 });
 
