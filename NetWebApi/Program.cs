@@ -2,9 +2,9 @@ using Repository;
 using Microsoft.EntityFrameworkCore;
 using FluentValidation.AspNetCore;
 using FluentValidation;
-using Repository.Interfaces;
 using Repository.Repositories;
 using Microsoft.Extensions.DependencyInjection;
+using Model.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
 

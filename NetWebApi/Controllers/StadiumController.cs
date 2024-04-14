@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Model.Entities;
 using NetWebApi.DTOs;
-using Repository.Interfaces;
 
 namespace NetWebApi.Controllers
 {

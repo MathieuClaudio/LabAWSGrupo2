@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Repository.Interfaces
+namespace Model.Entities
 {
     public interface IStadiumRepository : IRepository<Stadium>
     {

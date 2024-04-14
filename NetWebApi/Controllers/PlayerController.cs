@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using Model.Entities;
 using NetWebApi.DTOs;
 using Repository;
-using Repository.Interfaces;
 using Repository.Repositories;
 
 namespace NetWebApi.Controllers
