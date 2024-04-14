@@ -20,9 +20,14 @@ namespace Repository.Configuration
             builder.Property(e => e.MatchDate).IsRequired();
 
             // Relación con Club
-            builder.HasOne(e => e.Club)
+            builder.HasOne(e => e.ClubA)
                    .WithMany()
                    .HasForeignKey(e => e.IdClubA)
+                   .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasOne(e => e.ClubB)
+                   .WithMany()
+                   .HasForeignKey(e => e.IdClubB)
                    .OnDelete(DeleteBehavior.Restrict);
 
             // Relación con Stadium
@@ -40,7 +45,7 @@ namespace Repository.Configuration
                     IdClubA = 1,
                     IdClubB = 2,
                     IdStadium = 1,
-                    Result = "1 a 0"
+                    Result = "1 a 0",
                 },
                 new Match
                 {

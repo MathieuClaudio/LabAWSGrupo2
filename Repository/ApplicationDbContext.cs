@@ -42,6 +42,7 @@ namespace Repository
         public DbSet<Stadium> Stadiums { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public DbSet<Match> Matches { get; set; }
+        public DbSet<Standing> Standings { get; set; }
         //public DbSet<Tournament> Tournaments { get; set; }
 
     }

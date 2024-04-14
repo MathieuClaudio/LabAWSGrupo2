@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Repository;
 
@@ -11,9 +12,11 @@ using Repository;
 namespace Repository.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240414223717_Modified-Match")]
+    partial class ModifiedMatch
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -402,67 +405,6 @@ namespace Repository.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Model.Entities.Standing", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("IdClub")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MatchesPlayed")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Points")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Position")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("IdClub");
-
-                    b.ToTable("Standings");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            IdClub = 1,
-                            MatchesPlayed = 6,
-                            Points = 12,
-                            Position = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            IdClub = 2,
-                            MatchesPlayed = 5,
-                            Points = 10,
-                            Position = 2
-                        },
-                        new
-                        {
-                            Id = 3,
-                            IdClub = 3,
-                            MatchesPlayed = 4,
-                            Points = 8,
-                            Position = 3
-                        },
-                        new
-                        {
-                            Id = 4,
-                            IdClub = 4,
-                            MatchesPlayed = 4,
-                            Points = 7,
-                            Position = 4
-                        });
-                });
-
             modelBuilder.Entity("Model.Entities.User", b =>
                 {
                     b.Property<int>("Id")
@@ -547,17 +489,6 @@ namespace Repository.Migrations
                         .WithMany("Players")
                         .HasForeignKey("ClubId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Club");
-                });
-
-            modelBuilder.Entity("Model.Entities.Standing", b =>
-                {
-                    b.HasOne("Model.Entities.Club", "Club")
-                        .WithMany()
-                        .HasForeignKey("IdClub")
-                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Club");

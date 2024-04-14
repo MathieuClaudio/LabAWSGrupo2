@@ -17,10 +17,11 @@ namespace Model.Entities
 
         // Equipo A
         public int IdClubA { get; set; }
+        public Club ClubA { get; set; }
 
         // Equipo B
         public int IdClubB { get; set; }
-        public Club Club { get; set; }
+        public Club ClubB { get; set; }
 
         // Estadio del evento
         public int IdStadium { get; set; }
