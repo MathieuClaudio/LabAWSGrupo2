@@ -13,8 +13,8 @@ namespace Model.Entities
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public Date StartDate { get; set; }
-        public Date EndDate { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
         public List<Standing> Standing { get; set; }
         public List<Match> Matches { get; set; }
         public List<Club> Clubs { get; set; }

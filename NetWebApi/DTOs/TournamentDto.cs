@@ -10,18 +10,12 @@ namespace NetWebApi.DTOs
 {
     public class TournamentDto
     {
-        // Nombre del Torneo (Copa Argentina)
+        public int Id { get; set; }
         public string Name { get; set; }
-
-        // Tabla de posición
-        [ForeignKey(nameof(Standing))]
-        public int IdStanding { get; set; }
-        public Standing Standing { get; set; } // Relación de composición
-
-        // Lista de partidos
-        public List<Match> Matches { get; set; } // Relación de agregación
-
-        // Lista de clubes
-        public List<Club> Clubs { get; set; } // Relación de agregación
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
+        public List<Standing> Standing { get; set; }
+        public List<Match> Matches { get; set; }
+        public List<Club> Clubs { get; set; }
     }
 }
