@@ -191,7 +191,98 @@ namespace Repository.Configuration
                     Age = 25,
                     Number = 14,
                     ClubId = 2,
-                }
+                },
+
+
+                // Argentinos Juniors
+                   new Player
+                   {
+                       Id = 23,
+                       FullName = "Diego Rodríguezs",
+                       Age = 34,
+                       Number = 50,
+                       ClubId = 3,
+                   },
+                   new Player
+                    {
+                          Id = 24,
+                          FullName = "Fernando Meza",
+                          Age = 34,
+                          Number = 18,
+                          ClubId = 3,
+                    },
+                    new Player
+                     {
+                        Id = 25,
+                        FullName = "Francisco Álvarez",
+                        Age = 24,
+                        Number = 16,
+                         ClubId = 3,
+                     },
+                    new Player
+                     {
+                          Id = 26,
+                          FullName = "Jonathan Galván",
+                          Age = 31,
+                          Number = 19,
+                          ClubId = 3,
+                     },
+                    new Player
+                    {
+                        Id = 27,
+                        FullName = "Román Vega",
+                        Age = 20,
+                        Number = 6,
+                        ClubId = 3,
+                    },
+                     new Player
+                     {
+                         Id = 28,
+                         FullName = "Alan Lescano ",
+                         Age = 22,
+                         Number = 22,
+                         ClubId = 3,
+                     },
+                     new Player
+                     {
+                         Id = 29,
+                         FullName = "Franco Moyano",
+                         Age = 26,
+                         Number = 17,
+                         ClubId = 3,
+                     },
+                     new Player
+                     {
+                         Id = 30,
+                         FullName = "Nicolás Oroz",
+                         Age = 30,
+                         Number = 21,
+                         ClubId = 3,
+                     },
+                     new Player
+                     {
+                         Id = 31,
+                         FullName = "José Herrera",
+                         Age = 20,
+                         Number = 26,
+                         ClubId = 3,
+                     },
+                     new Player
+                     {
+                         Id = 32,
+                         FullName = "Luciano Gondou",
+                         Age = 22,
+                         Number = 32,
+                         ClubId = 3,
+                     },
+                     new Player
+                     {
+                         Id = 33,
+                         FullName = "Maximiliano Romero",
+                         Age = 25,
+                         Number = 9,
+                         ClubId = 3,
+                     }
                 );
         }
     }

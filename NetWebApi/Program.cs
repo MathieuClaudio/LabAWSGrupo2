@@ -10,6 +10,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Model.Interfaces;
 using Microsoft.OpenApi.Models;
+using System;
+using System.IdentityModel.Tokens.Jwt;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -48,6 +50,8 @@ builder.Services.AddFluentValidationAutoValidation();
 
 
 //---------------------------------------JWT Swagger-----------------------------
+//builder.Services.AddSwaggerGen();
+
 builder.Services.AddSwaggerGen(option =>
 {
     option.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "JWT", Version = "v1" });
@@ -76,7 +80,7 @@ builder.Services.AddSwaggerGen(option =>
 });
 //--------------------------------------------------------------------------------
 
-//-----------------------------JWT--------------------------------
+//-----------------------------JWT---------------------------------------------
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 {
     options.RequireHttpsMetadata = false;
@@ -93,9 +97,11 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 });
 //----------------------------------------------------------------
 
-
-
 var app = builder.Build();
+
+
+app.UseAuthentication(); // JWT
+app.UseAuthorization();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -103,9 +109,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
-app.UseAuthentication(); // JWT
-app.UseAuthorization();
 
 app.MapControllers();
 
