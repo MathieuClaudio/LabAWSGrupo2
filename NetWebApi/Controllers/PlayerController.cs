@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Model.Entities;
@@ -65,6 +66,7 @@ namespace NetWebApi.Controllers
         /// <param name="playerPostDto"></param>
         /// <returns></returns>
         [HttpPost("InsertPlayer")]
+        [Authorize]
         public async Task<ActionResult> InsertPlayer(PlayerPostDto playerPostDto)
         {
             var player = new Player
@@ -83,6 +85,7 @@ namespace NetWebApi.Controllers
 
 
         [HttpPut("UpdatePlayer/{playerId}")]
+        [Authorize]
         public async Task<ActionResult> UpdatePlayer(int playerId, PlayerDto playerDto)
         {
             if (playerDto == null || playerId != playerDto.Id)
@@ -109,6 +112,7 @@ namespace NetWebApi.Controllers
 
 
         [HttpDelete("DeletePlayer/{playerId}")]
+        [Authorize]
         public async Task<ActionResult> DeletePlayer(int playerId)
         {
             try
