@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Model.Entities;
+using Repository.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,24 +11,18 @@ namespace Repository.Repositories
 {
     internal class MatchRepository : Repository<Match>, IMatchRepository
     {
-        public MatchRepository(DbContext context) : base(context)
+        public MatchRepository(ApplicationDbContext context) : base(context)
         {
         }
 
-        public async Task<IEnumerable<Match>> GetAllAsync()
+        public async Task<List<Match>> GetAllAsync()
         {
-            return await Context.Set<Match>().Include(m => m.Club).ToListAsync();
+            throw new NotImplementedException();
         }
 
         public async Task<Match> GetByIdAsync(int id)
         {
-            return await Context.Set<Match>().Include(m => m.Club).FirstOrDefaultAsync(m => m.Id == id);
+            throw new NotImplementedException();
         }
-
-        public bool Exists(int id)
-        {
-            return Context.Set<Match>().Any(e => e.Id == id);
-        }
-    {
     }
 }

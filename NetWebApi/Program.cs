@@ -27,7 +27,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
         b => b.MigrationsAssembly("Repository")));
 
 //--------------Inyecciones----------------------------------------
-builder.Services.AddScoped<IClubRepository, ClubRepository>();
+//builder.Services.AddScoped<IClubRepository, ClubRepository>();
 builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
 builder.Services.AddScoped<IStadiumRepository, StadiumRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
