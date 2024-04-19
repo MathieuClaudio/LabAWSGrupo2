@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Repository;
 
@@ -11,9 +12,11 @@ using Repository;
 namespace Repository.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240415003355_Add-Tournament")]
+    partial class AddTournament
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -364,94 +367,6 @@ namespace Repository.Migrations
                             ClubId = 2,
                             FullName = "HERRERA Marcelo Andrés",
                             Number = 14
-                        },
-                        new
-                        {
-                            Id = 23,
-                            Age = 34,
-                            ClubId = 3,
-                            FullName = "Diego Rodríguezs",
-                            Number = 50
-                        },
-                        new
-                        {
-                            Id = 24,
-                            Age = 34,
-                            ClubId = 3,
-                            FullName = "Fernando Meza",
-                            Number = 18
-                        },
-                        new
-                        {
-                            Id = 25,
-                            Age = 24,
-                            ClubId = 3,
-                            FullName = "Francisco Álvarez",
-                            Number = 16
-                        },
-                        new
-                        {
-                            Id = 26,
-                            Age = 31,
-                            ClubId = 3,
-                            FullName = "Jonathan Galván",
-                            Number = 19
-                        },
-                        new
-                        {
-                            Id = 27,
-                            Age = 20,
-                            ClubId = 3,
-                            FullName = "Román Vega",
-                            Number = 6
-                        },
-                        new
-                        {
-                            Id = 28,
-                            Age = 22,
-                            ClubId = 3,
-                            FullName = "Alan Lescano ",
-                            Number = 22
-                        },
-                        new
-                        {
-                            Id = 29,
-                            Age = 26,
-                            ClubId = 3,
-                            FullName = "Franco Moyano",
-                            Number = 17
-                        },
-                        new
-                        {
-                            Id = 30,
-                            Age = 30,
-                            ClubId = 3,
-                            FullName = "Nicolás Oroz",
-                            Number = 21
-                        },
-                        new
-                        {
-                            Id = 31,
-                            Age = 20,
-                            ClubId = 3,
-                            FullName = "José Herrera",
-                            Number = 26
-                        },
-                        new
-                        {
-                            Id = 32,
-                            Age = 22,
-                            ClubId = 3,
-                            FullName = "Luciano Gondou",
-                            Number = 32
-                        },
-                        new
-                        {
-                            Id = 33,
-                            Age = 25,
-                            ClubId = 3,
-                            FullName = "Maximiliano Romero",
-                            Number = 9
                         });
                 });
 

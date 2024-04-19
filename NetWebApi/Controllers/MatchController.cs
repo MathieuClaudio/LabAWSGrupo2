@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Model.Entities;
+using NetWebApi.DTOs;
 
 namespace NetWebApi.Controllers
 {
@@ -15,38 +17,119 @@ namespace NetWebApi.Controllers
             _unitOfWork = unitOfWork;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetMatches()
+
+        [HttpGet("GetAll")]
+        public async Task<ActionResult<List<MatchDto>>> GetAll()
         {
-            throw new NotImplementedException();
+            var matchs = await _unitOfWork.MatchRepository.GetAll();
+
+            // Mapea los matches a MathDto
+            var matchDto = matchs.Select(match => new MatchDto
+            {
+                Id = match.Id,
+                MatchDate = match.MatchDate,
+                IdClubA = match.IdClubA,
+                IdClubB = match.IdClubB,
+                IdStadium = match.IdStadium,
+                Result = match.Result
+
+            }).ToList();
+
+            return Ok(matchDto);
         }
 
-        // GET:
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetMatch(int id)
+
+        [HttpGet("GetMatchById/{matchId}")]
+        public async Task<ActionResult<MatchDto>> GetMatchById(int matchId)
         {
-            throw new NotImplementedException();
+            var match = await _unitOfWork.MatchRepository.GetId(matchId);
+
+            if (match == null)
+            {
+                return NotFound(); // Devuelve un 404 si el match no se encuentra
+            }
+
+            // Mapea el match a MatchDto
+            var matchDto = new MatchDto
+            {
+                Id = match.Id,
+                MatchDate = match.MatchDate,
+                IdClubA = match.IdClubA,
+                IdClubB = match.IdClubB,
+                IdStadium = match.IdStadium,
+                Result = match.Result
+            };
+
+            return Ok(matchDto);
         }
 
-        // POST: 
-        [HttpPost]
-        public async Task<IActionResult> CreateMatch(Match match)
+        [HttpPost("InsertMatch")]
+        public async Task<ActionResult> InsertMatch(MatchPostDto matchPostDto)
         {
-            throw new NotImplementedException();
+            if (matchPostDto == null)
+            {
+                return BadRequest("Datos NO válidos para crear matches.");
+            }
+
+            var match = new Match
+            {
+                MatchDate = matchPostDto.MatchDate,
+                IdClubA = matchPostDto.IdClubA,
+                IdClubB = matchPostDto.IdClubB,
+                IdStadium = matchPostDto.IdStadium,
+                Result = matchPostDto.Result
+            };
+            await _unitOfWork.MatchRepository.Insert(match);
+            var result = await _unitOfWork.Save();
+            return Ok("Match creado");
         }
 
-        // PUT: 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateMatch(int id, Match match)
+        [HttpPut("UpdateMatch/{matchId}")]
+        public async Task<ActionResult> UpdateMatch(int matchId, MatchUpdateDto matchUpdateDto)
         {
-            throw new NotImplementedException();
+            if (matchUpdateDto == null || matchId != matchUpdateDto.Id)
+            {
+                return BadRequest("Datos no válidos para actualizar el match.");
+            }
+
+            var existingMatch = await _unitOfWork.MatchRepository.GetId(matchId);
+
+            if (existingMatch == null)
+            {
+                return NotFound(); // El match no existe
+            }
+
+            // Actualizar los datos del match
+            existingMatch.MatchDate = matchUpdateDto.MatchDate;
+            existingMatch.Result = matchUpdateDto.Result;
+
+            // Guardar los cambios en la base de datos
+            await _unitOfWork.MatchRepository.Update(existingMatch);
+
+            return Ok("Match actualizado correctamente.");
         }
 
-        // DELETE: api/Match/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteMatch(int id)
+        [HttpDelete("DeleteMatch/{matchId}")]
+        public async Task<ActionResult> DeleteMatch(int matchId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                await _unitOfWork.MatchRepository.Delete(matchId);
+                return Ok("Match eliminado correctamente.");
+            }
+            catch (Exception ex)
+            {
+                // Manejar la excepción y devolver un código de respuesta adecuado
+                if (ex.Message == "Match no encontrado.")
+                {
+                    return NotFound("Match no encontrado.");
+                }
+                else
+                {
+                    return StatusCode(500, "Error interno del servidor.");
+                }
+            }
         }
+
     }
 }

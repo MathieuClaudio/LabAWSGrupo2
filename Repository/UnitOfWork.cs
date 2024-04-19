@@ -14,6 +14,9 @@ namespace Repository
         public IClubRepository ClubRepository { get; }
         public IStadiumRepository StadiumRepository { get; }
         public IUserRepository UserRepository { get; }
+        public IMatchRepository MatchRepository { get; }
+        public IStandingRepository StandingRepository { get; }
+        public ITournamentRepository TournamentRepository { get; }
 
         private readonly ApplicationDbContext _context;
 
@@ -21,7 +24,10 @@ namespace Repository
                             IPlayerRepository playerRepository, 
                             IClubRepository clubRepository,
                             IStadiumRepository stadiumRepository,
-                            IUserRepository userRepository
+                            IUserRepository userRepository,
+                            IMatchRepository matchRepository,
+                            IStandingRepository standingRepository,
+                            ITournamentRepository tournamentRepository
             )
         {
             _context = context;
@@ -29,6 +35,9 @@ namespace Repository
             ClubRepository = clubRepository;
             StadiumRepository = stadiumRepository;
             UserRepository = userRepository;
+            MatchRepository = matchRepository;
+            StandingRepository = standingRepository;
+            TournamentRepository = tournamentRepository;
         }
 
         public async Task<int> Save()

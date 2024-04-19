@@ -10,8 +10,6 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Model.Interfaces;
 using Microsoft.OpenApi.Models;
-using System;
-using System.IdentityModel.Tokens.Jwt;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,39 +17,7 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 
-// Add services to the container.
-
-//--------------SqlServer------------------------
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
-        b => b.MigrationsAssembly("Repository")));
-
-//--------------Inyecciones----------------------------------------
-//builder.Services.AddScoped<IClubRepository, ClubRepository>();
-builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
-builder.Services.AddScoped<IStadiumRepository, StadiumRepository>();
-builder.Services.AddScoped<IUserRepository, UserRepository>();
-
-builder.Services.AddScoped<IUnitOfWork, UnitOfWork>(
-    x => new UnitOfWork(
-        x.GetRequiredService<ApplicationDbContext>(),
-        x.GetRequiredService<IPlayerRepository>(),
-        x.GetRequiredService<IClubRepository>(),
-        x.GetRequiredService<IStadiumRepository>(),
-        x.GetRequiredService<IUserRepository>()
-    ));
-//----------------------------------------------------------------
-
-//--------------FluentValidation----------------------------------
-builder.Services.AddValidatorsFromAssemblyContaining<Program>();
-builder.Services.AddFluentValidationAutoValidation();
-//----------------------------------------------------------------
-
-
-
 //---------------------------------------JWT Swagger-----------------------------
-//builder.Services.AddSwaggerGen();
-
 builder.Services.AddSwaggerGen(option =>
 {
     option.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "JWT", Version = "v1" });
@@ -80,7 +46,7 @@ builder.Services.AddSwaggerGen(option =>
 });
 //--------------------------------------------------------------------------------
 
-//-----------------------------JWT---------------------------------------------
+//-----------------------------JWT--------------------------------
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 {
     options.RequireHttpsMetadata = false;
@@ -97,11 +63,43 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 });
 //----------------------------------------------------------------
 
+// Add services to the container.
+
+//--------------SqlServer------------------------
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
+        b => b.MigrationsAssembly("Repository")));
+
+//--------------Inyecciones----------------------------------------
+builder.Services.AddScoped<IClubRepository, ClubRepository>();
+builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
+builder.Services.AddScoped<IStadiumRepository, StadiumRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IMatchRepository, MatchRepository>();
+builder.Services.AddScoped<IStandingRepository, StandingRepository>();
+builder.Services.AddScoped<ITournamentRepository, TournamentRepository>();
+
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>(
+    x => new UnitOfWork(
+        x.GetRequiredService<ApplicationDbContext>(),
+        x.GetRequiredService<IPlayerRepository>(),
+        x.GetRequiredService<IClubRepository>(),
+        x.GetRequiredService<IStadiumRepository>(),
+        x.GetRequiredService<IUserRepository>(),
+        x.GetRequiredService<IMatchRepository>(),
+        x.GetRequiredService<IStandingRepository>(),
+        x.GetRequiredService<ITournamentRepository>()
+    ));
+//----------------------------------------------------------------
+
+//--------------FluentValidation----------------------------------
+builder.Services.AddValidatorsFromAssemblyContaining<Program>();
+builder.Services.AddFluentValidationAutoValidation();
+//----------------------------------------------------------------
+
+
+
 var app = builder.Build();
-
-
-app.UseAuthentication(); // JWT
-app.UseAuthorization();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -109,6 +107,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseAuthentication(); // JWT
+app.UseAuthorization();
 
 app.MapControllers();
 

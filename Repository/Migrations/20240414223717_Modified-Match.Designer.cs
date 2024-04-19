@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Repository;
 
@@ -11,9 +12,11 @@ using Repository;
 namespace Repository.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240414223717_Modified-Match")]
+    partial class ModifiedMatch
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -35,12 +38,7 @@ namespace Repository.Migrations
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
 
-                    b.Property<int?>("TournamentId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("TournamentId");
 
                     b.ToTable("Clubs");
 
@@ -122,9 +120,6 @@ namespace Repository.Migrations
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
 
-                    b.Property<int?>("TournamentId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("IdClubA");
@@ -132,8 +127,6 @@ namespace Repository.Migrations
                     b.HasIndex("IdClubB");
 
                     b.HasIndex("IdStadium");
-
-                    b.HasIndex("TournamentId");
 
                     b.ToTable("Matches");
 
@@ -364,94 +357,6 @@ namespace Repository.Migrations
                             ClubId = 2,
                             FullName = "HERRERA Marcelo Andrés",
                             Number = 14
-                        },
-                        new
-                        {
-                            Id = 23,
-                            Age = 34,
-                            ClubId = 3,
-                            FullName = "Diego Rodríguezs",
-                            Number = 50
-                        },
-                        new
-                        {
-                            Id = 24,
-                            Age = 34,
-                            ClubId = 3,
-                            FullName = "Fernando Meza",
-                            Number = 18
-                        },
-                        new
-                        {
-                            Id = 25,
-                            Age = 24,
-                            ClubId = 3,
-                            FullName = "Francisco Álvarez",
-                            Number = 16
-                        },
-                        new
-                        {
-                            Id = 26,
-                            Age = 31,
-                            ClubId = 3,
-                            FullName = "Jonathan Galván",
-                            Number = 19
-                        },
-                        new
-                        {
-                            Id = 27,
-                            Age = 20,
-                            ClubId = 3,
-                            FullName = "Román Vega",
-                            Number = 6
-                        },
-                        new
-                        {
-                            Id = 28,
-                            Age = 22,
-                            ClubId = 3,
-                            FullName = "Alan Lescano ",
-                            Number = 22
-                        },
-                        new
-                        {
-                            Id = 29,
-                            Age = 26,
-                            ClubId = 3,
-                            FullName = "Franco Moyano",
-                            Number = 17
-                        },
-                        new
-                        {
-                            Id = 30,
-                            Age = 30,
-                            ClubId = 3,
-                            FullName = "Nicolás Oroz",
-                            Number = 21
-                        },
-                        new
-                        {
-                            Id = 31,
-                            Age = 20,
-                            ClubId = 3,
-                            FullName = "José Herrera",
-                            Number = 26
-                        },
-                        new
-                        {
-                            Id = 32,
-                            Age = 22,
-                            ClubId = 3,
-                            FullName = "Luciano Gondou",
-                            Number = 32
-                        },
-                        new
-                        {
-                            Id = 33,
-                            Age = 25,
-                            ClubId = 3,
-                            FullName = "Maximiliano Romero",
-                            Number = 9
                         });
                 });
 
@@ -498,96 +403,6 @@ namespace Repository.Migrations
                             Id = 5,
                             Name = "Diego Armando Maradona"
                         });
-                });
-
-            modelBuilder.Entity("Model.Entities.Standing", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("IdClub")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MatchesPlayed")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Points")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Position")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("TournamentId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("IdClub");
-
-                    b.HasIndex("TournamentId");
-
-                    b.ToTable("Standings");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            IdClub = 1,
-                            MatchesPlayed = 6,
-                            Points = 12,
-                            Position = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            IdClub = 2,
-                            MatchesPlayed = 5,
-                            Points = 10,
-                            Position = 2
-                        },
-                        new
-                        {
-                            Id = 3,
-                            IdClub = 3,
-                            MatchesPlayed = 4,
-                            Points = 8,
-                            Position = 3
-                        },
-                        new
-                        {
-                            Id = 4,
-                            IdClub = 4,
-                            MatchesPlayed = 4,
-                            Points = 7,
-                            Position = 4
-                        });
-                });
-
-            modelBuilder.Entity("Model.Entities.Tournament", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("EndDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
-
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Tournaments");
                 });
 
             modelBuilder.Entity("Model.Entities.User", b =>
@@ -641,13 +456,6 @@ namespace Repository.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Model.Entities.Club", b =>
-                {
-                    b.HasOne("Model.Entities.Tournament", null)
-                        .WithMany("Clubs")
-                        .HasForeignKey("TournamentId");
-                });
-
             modelBuilder.Entity("Model.Entities.Match", b =>
                 {
                     b.HasOne("Model.Entities.Club", "ClubA")
@@ -668,10 +476,6 @@ namespace Repository.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Model.Entities.Tournament", null)
-                        .WithMany("Matches")
-                        .HasForeignKey("TournamentId");
-
                     b.Navigation("ClubA");
 
                     b.Navigation("ClubB");
@@ -690,33 +494,9 @@ namespace Repository.Migrations
                     b.Navigation("Club");
                 });
 
-            modelBuilder.Entity("Model.Entities.Standing", b =>
-                {
-                    b.HasOne("Model.Entities.Club", "Club")
-                        .WithMany()
-                        .HasForeignKey("IdClub")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Model.Entities.Tournament", null)
-                        .WithMany("Standing")
-                        .HasForeignKey("TournamentId");
-
-                    b.Navigation("Club");
-                });
-
             modelBuilder.Entity("Model.Entities.Club", b =>
                 {
                     b.Navigation("Players");
-                });
-
-            modelBuilder.Entity("Model.Entities.Tournament", b =>
-                {
-                    b.Navigation("Clubs");
-
-                    b.Navigation("Matches");
-
-                    b.Navigation("Standing");
                 });
 #pragma warning restore 612, 618
         }

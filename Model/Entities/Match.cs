@@ -16,18 +16,15 @@ namespace Model.Entities
         public DateTime MatchDate { get; set; }
 
         // Equipo A
-        [ForeignKey(nameof(Club))]
-        public int IdTeamA { get; set; }
-        public Club TeamA { get; set; }
+        public int IdClubA { get; set; }
+        public Club ClubA { get; set; }
 
         // Equipo B
-        [ForeignKey(nameof(Club))]
-        public int IdTeamB { get; set; }
-        public Club TeamB { get; set; }
+        public int IdClubB { get; set; }
+        public Club ClubB { get; set; }
 
         // Estadio del evento
-        [ForeignKey(nameof(Stadium))]
-        public int StadiumId { get; set; }
+        public int IdStadium { get; set; }
         public Stadium Venue { get; set; }
 
         // Resultado del evento
