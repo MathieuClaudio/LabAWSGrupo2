@@ -15,7 +15,6 @@ namespace Repository
         public IStadiumRepository StadiumRepository { get; }
         public IUserRepository UserRepository { get; }
         public IMatchRepository MatchRepository { get; }
-        public IStandingRepository StandingRepository { get; }
         public ITournamentRepository TournamentRepository { get; }
 
         private readonly ApplicationDbContext _context;
@@ -26,7 +25,6 @@ namespace Repository
                             IStadiumRepository stadiumRepository,
                             IUserRepository userRepository,
                             IMatchRepository matchRepository,
-                            IStandingRepository standingRepository,
                             ITournamentRepository tournamentRepository
             )
         {
@@ -36,7 +34,6 @@ namespace Repository
             StadiumRepository = stadiumRepository;
             UserRepository = userRepository;
             MatchRepository = matchRepository;
-            StandingRepository = standingRepository;
             TournamentRepository = tournamentRepository;
         }
 

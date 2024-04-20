@@ -27,23 +27,32 @@ namespace Repository
             configurationBuilder.Properties<string>().HaveMaxLength(150);
         }
 
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
-            // Aplicando las configuraciones API Fluent que están en la carpeta Configuration 
-            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-        }
-
-
         
         public DbSet<Club> Clubs { get; set; }
         public DbSet<Player> Players { get; set; }
         public DbSet<Stadium> Stadiums { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public DbSet<Match> Matches { get; set; }
-        public DbSet<Standing> Standings { get; set; }
+        public DbSet<TournamentClub> TournamentsClubs{ get; set; }
         public DbSet<Tournament> Tournaments { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            // Aplicando las configuraciones API Fluent que están en la carpeta Configuration 
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+
+            modelBuilder.Entity<TournamentClub>()
+                .HasKey(tc => new { tc.IdClub, tc.IdTournament });
+            modelBuilder.Entity<TournamentClub>()
+                .HasOne(t => t.Tournament)
+                .WithMany(tc => tc.TournamentsClubs)
+                .HasForeignKey(t => t.IdTournament);
+            modelBuilder.Entity<TournamentClub>()
+                .HasOne(t => t.Club)
+                .WithMany(tc => tc.TournamentsClubs)
+                .HasForeignKey(c => c.IdClub);
+        }
 
     }
 }
