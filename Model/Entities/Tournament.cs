@@ -20,7 +20,7 @@ namespace Model.Entities
         // relacion one to many (un torneo muchos partidos)
         public List<Match> Matches { get; set; }
 
-        // relación many-to-many (un torneo muchos clubs, un clubs muchos torneos)
+        // relación many-to-many (un torneo muchos clubs, un clubs muchos torneos) - "Clubs que juegan o jugaron el torneo"
         public List<TournamentClub> TournamentsClubs { get; set; }
     }
 }

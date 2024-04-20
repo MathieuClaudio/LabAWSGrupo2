@@ -42,16 +42,7 @@ namespace Repository
             // Aplicando las configuraciones API Fluent que están en la carpeta Configuration 
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
-            modelBuilder.Entity<TournamentClub>()
-                .HasKey(tc => new { tc.IdClub, tc.IdTournament });
-            modelBuilder.Entity<TournamentClub>()
-                .HasOne(t => t.Tournament)
-                .WithMany(tc => tc.TournamentsClubs)
-                .HasForeignKey(t => t.IdTournament);
-            modelBuilder.Entity<TournamentClub>()
-                .HasOne(t => t.Club)
-                .WithMany(tc => tc.TournamentsClubs)
-                .HasForeignKey(c => c.IdClub);
+          
         }
 
     }

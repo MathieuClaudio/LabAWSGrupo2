@@ -23,6 +23,9 @@ namespace Model.Entities
         public int IdClubB { get; set; }
         public Club ClubB { get; set; }
 
+        // Vinculo a torneo
+        public int IdTournament { get; set; }
+
         // Estadio del evento
         public int IdStadium { get; set; }
         public Stadium Venue { get; set; }

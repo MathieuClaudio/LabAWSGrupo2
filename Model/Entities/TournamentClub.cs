@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Model.Entities
 {
-    // virtualmente Stand(ing)
+    // virtualmente Stand(ing)  
     public class TournamentClub
     {
         public int Id { get; set; }
