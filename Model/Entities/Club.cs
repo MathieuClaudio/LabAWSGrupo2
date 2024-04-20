@@ -11,6 +11,8 @@ namespace Model.Entities
     {
         public int Id { get; set; }
         public string Name { get; set; }
+
+        // Relación One-to-Many
         public List<Player> Players { get; set; }
     }
 }

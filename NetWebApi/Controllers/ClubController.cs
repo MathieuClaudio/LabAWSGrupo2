@@ -56,6 +56,7 @@ namespace NetWebApi.Controllers
                 return NotFound(); // Devuelve un 404 si el club no se encuentra
             }
 
+            // se utiliza un Dto de Player para evitar bucle si se utilizara la entidad Player, que tiene atributo club id
             var players = new List<PlayerDto>();
 
             for (int i = 0; i < clubPlayers.Count; i++)
@@ -78,15 +79,6 @@ namespace NetWebApi.Controllers
                 Name = club.Name,
                 Players =  players
 
-
-
-                //Players = club.Players.Select(player => new Player
-                //{
-                //    FullName = player.FullName,
-                //    Age = player.Age,
-                //    Number = player.Number,
-                //    ClubId = player.Id
-                //}).ToList()
             };
 
             return Ok(clubDto);

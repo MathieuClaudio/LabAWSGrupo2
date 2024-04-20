@@ -50,6 +50,7 @@ namespace Repository.Repositories
 
         }
 
+        // Relacion One-to-Many (un club posee muchos players)
         public async Task<List<Player>> GetPlayersByClub(int clubId)
         {
             var club = await _context.Clubs.FindAsync(clubId);
