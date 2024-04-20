@@ -10,12 +10,16 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Model.Interfaces;
 using Microsoft.OpenApi.Models;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
+// Para errores Object Cycles: (para que no se quede en loop cuando tenes many-to-many) 
+builder.Services.AddControllers().AddJsonOptions(x =>
+                x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
 //---------------------------------------JWT Swagger-----------------------------
 builder.Services.AddSwaggerGen(option =>

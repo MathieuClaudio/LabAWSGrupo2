@@ -50,5 +50,18 @@ namespace Repository.Repositories
 
         }
 
+        public async Task<List<Player>> GetPlayersByClub(int clubId)
+        {
+            var club = await _context.Clubs.FindAsync(clubId);
+            if (club == null)
+            {
+                throw new InvalidOperationException("Club no encontrado.");
+            }
+
+            var clubPlayers = await _context.Players.Where(p => p.ClubId == clubId).ToListAsync();
+
+            return clubPlayers;
+        }
+
     }
 }

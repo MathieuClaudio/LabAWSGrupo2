@@ -13,7 +13,7 @@ namespace NetWebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class ClubController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -30,7 +30,7 @@ namespace NetWebApi.Controllers
         /// AutoMapper.AutoMapperMappingException: Error mapping types.
         /// <returns></returns>
         [HttpGet("GetAll")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public async Task<ActionResult<List<ClubDto>>> GetAll()
         {
             var clubs = await _unitOfWork.ClubRepository.GetAll();
@@ -49,16 +49,37 @@ namespace NetWebApi.Controllers
         public async Task<ActionResult<ClubDto>> GetClubById(int clubId)
         {
             var club = await _unitOfWork.ClubRepository.GetId(clubId);
+            var clubPlayers = await _unitOfWork.PlayerRepository.GetPlayersByClub(clubId);
 
             if (club == null)
             {
                 return NotFound(); // Devuelve un 404 si el club no se encuentra
             }
 
+            var players = new List<PlayerDto>();
+
+            for (int i = 0; i < clubPlayers.Count; i++)
+            {
+                var playerDto = new PlayerDto
+                {
+                    Id = clubPlayers[i].Id,
+                    FullName = clubPlayers[i].FullName,
+                    Age = clubPlayers[i].Age,
+                    Number = clubPlayers[i].Number
+                };
+                players.Add(playerDto);
+            }
+
+
             // Mapea el club a ClubDto
             var clubDto = new ClubDto
             {
+                Id = club.Id,   
                 Name = club.Name,
+                Players =  players
+
+
+
                 //Players = club.Players.Select(player => new Player
                 //{
                 //    FullName = player.FullName,
