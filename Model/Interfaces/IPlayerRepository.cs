@@ -11,6 +11,7 @@ namespace Model.Entities
     {
         Task<List<Player>> GetAll();
         Task<Player> GetId(int id);
+        Task<List<Player>> GetPlayersByClubId(int clubId);
         Task<Player> Insert(Player player);
         Task<Player> Update(Player player);
         Task<Player> Delete(int id);

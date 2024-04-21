@@ -1,4 +1,5 @@
 ﻿using Model.Entities;
+using Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,6 @@ namespace NetWebApi.DTOs
         public string Name { get; set; }
 
         // Listado de Jugadores
-        public List<Player> Players { get; set; }
+        public List<PlayerDto> Players { get; set; }
     }
 }

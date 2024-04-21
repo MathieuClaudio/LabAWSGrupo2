@@ -21,7 +21,11 @@ namespace Repository.Repositories
             var result = await _context.Players.FirstOrDefaultAsync(player => player.Id == id);
             return result;
         }
-
+        public async Task<List<Player>> GetPlayersByClubId(int clubId)
+        {
+            var result =  await _context.Players.Where(p => p.ClubId == clubId).ToListAsync();
+            return result;
+        }
         public async Task<Player> Insert(Player player)
         {
             EntityEntry<Player> insertPlayer = await _context.Players.AddAsync(player);

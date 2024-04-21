@@ -46,9 +46,11 @@ namespace NetWebApi.Controllers
         }
 
         [HttpGet("GetClubById/{clubId}")]
+        [AllowAnonymous]
         public async Task<ActionResult<ClubDto>> GetClubById(int clubId)
         {
             var club = await _unitOfWork.ClubRepository.GetId(clubId);
+            var players = await _unitOfWork.PlayerRepository.GetPlayersByClubId(clubId);
 
             if (club == null)
             {
@@ -59,13 +61,13 @@ namespace NetWebApi.Controllers
             var clubDto = new ClubDto
             {
                 Name = club.Name,
-                //Players = club.Players.Select(player => new Player
-                //{
-                //    FullName = player.FullName,
-                //    Age = player.Age,
-                //    Number = player.Number,
-                //    ClubId = player.Id
-                //}).ToList()
+                Players = players.Select(player => new PlayerDto
+                {
+                    FullName = player.FullName,
+                    Age = player.Age,
+                    Number = player.Number
+
+                }).ToList()
             };
 
             return Ok(clubDto);

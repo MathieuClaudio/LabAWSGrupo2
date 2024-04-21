@@ -23,6 +23,7 @@ namespace Repository.Repositories
             return result;
         }
 
+
         public async Task<Club> Insert(Club club)
         {
             EntityEntry<Club> insertClub = await _context.Clubs.AddAsync(club);
