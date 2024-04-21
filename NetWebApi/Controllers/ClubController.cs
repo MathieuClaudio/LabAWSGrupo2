@@ -35,14 +35,28 @@ namespace NetWebApi.Controllers
         {
             var clubs = await _unitOfWork.ClubRepository.GetAll();
 
-            // Mapea los clubes a ClubDto
-            var clubDto = clubs.Select(club => new ClubDto
-            {
-                Id = club.Id,
-                Name = club.Name
-            }).ToList();
+            var clubDtos = new List<ClubDto>();
 
-            return Ok(clubDto);
+            foreach (var club in clubs)
+            {
+                var players = await _unitOfWork.PlayerRepository.GetPlayersByClubId(club.Id);
+
+                var clubDto = new ClubDto
+                {
+                    Id = club.Id,
+                    Name = club.Name,
+                    Players = players.Select(player => new PlayerDto
+                    {
+                        FullName = player.FullName,
+                        Age = player.Age,
+                        Number = player.Number
+                    }).ToList()
+                };
+
+                clubDtos.Add(clubDto);
+            }
+
+            return Ok(clubDtos);
         }
 
         [HttpGet("GetClubById/{clubId}")]
