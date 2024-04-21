@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.OpenApi.Extensions;
 using Model.Entities;
 
 namespace Repository.Repositories
@@ -49,6 +50,14 @@ namespace Repository.Repositories
             await _context.SaveChangesAsync();
             return club;
 
+        }
+
+        public async Task<string> GetClubNameById(int id)
+        {
+            var club = await _context.Clubs.Where(c => c.Id == id).FirstOrDefaultAsync();
+            var clubName = club.Name;
+
+            return clubName;
         }
 
         

@@ -19,5 +19,7 @@ namespace Repository
 
         // Número
         public int Number { get; set; }
+        public string ClubName {  get; set; }
+    
     }
 }

@@ -31,7 +31,7 @@ namespace Repository.Configuration
                    .HasForeignKey(e => e.IdStadium)
                    .OnDelete(DeleteBehavior.Restrict);
 
-            // Seedyng
+            // Seeding
             builder.HasData(
                 new Match
                 {
