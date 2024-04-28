@@ -15,12 +15,8 @@ namespace Model.Entities
         public string Name { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
-        //public Standing Standing { get; set; }
-
-        // relacion one to many (un torneo muchos partidos)
+        public List<Standing> Standing { get; set; }
         public List<Match> Matches { get; set; }
-
-        // relación many-to-many (un torneo muchos clubs, un clubs muchos torneos) - "Clubs que juegan o jugaron el torneo"
-        public List<TournamentClub> TournamentsClubs { get; set; }
+        public List<Club> Clubs { get; set; }
     }
 }

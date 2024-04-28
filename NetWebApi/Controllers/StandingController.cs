@@ -25,10 +25,10 @@ namespace NetWebApi.Controllers
             // Mapea los standinges a StandingDto
             var standingDto = standings.Select(standing => new StandingDto
             {
-                Id = standing.Id,
-                Position = standing.Position,
-                Points = standing.Points,
-                MatchesPlayed = standing.MatchesPlayed,
+                //Id = standing.Id,
+                //Position = standing.Position,
+                //Points = standing.Points,
+                //MatchesPlayed = standing.MatchesPlayed,
                 IdClub = standing.IdClub
             }).ToList();
 
@@ -47,10 +47,10 @@ namespace NetWebApi.Controllers
 
             var standingDto = new StandingDto
             {
-                Id = standing.Id,
-                Position = standing.Position,
-                Points = standing.Points,
-                MatchesPlayed = standing.MatchesPlayed,
+                //Id = standing.Id,
+                //Position = standing.Position,
+                //Points = standing.Points,
+                //MatchesPlayed = standing.MatchesPlayed,
                 IdClub = standing.IdClub
             };
 
@@ -67,9 +67,9 @@ namespace NetWebApi.Controllers
 
             var standing = new Standing
             {
-                Position = standingPostDto.Position,
-                Points = standingPostDto.Points,
-                MatchesPlayed = standingPostDto.MatchesPlayed,
+                //Position = standingPostDto.Position,
+                //Points = standingPostDto.Points,
+                //MatchesPlayed = standingPostDto.MatchesPlayed,
                 IdClub = standingPostDto.IdClub
             };
             await _unitOfWork.StandingRepository.Insert(standing);
@@ -77,31 +77,31 @@ namespace NetWebApi.Controllers
             return Ok("Standing creado");
         }
 
-        [HttpPut("UpdateStanding/{standingId}")]
-        public async Task<ActionResult> UpdateStanding(int standingId, StandingUpdateDto standingUpdateDto)
-        {
-            if (standingUpdateDto == null || standingId != standingUpdateDto.Id)
-            {
-                return BadRequest("Datos no válidos para actualizar el standing.");
-            }
+        //[HttpPut("UpdateStanding/{standingId}")]
+        //public async Task<ActionResult> UpdateStanding(int standingId, StandingUpdateDto standingUpdateDto)
+        //{
+        //    if (standingUpdateDto == null || standingId != standingUpdateDto.Id)
+        //    {
+        //        return BadRequest("Datos no válidos para actualizar el standing.");
+        //    }
 
-            var existingStanding = await _unitOfWork.StandingRepository.GetId(standingId);
+        //    var existingStanding = await _unitOfWork.StandingRepository.GetId(standingId);
 
-            if (existingStanding == null)
-            {
-                return NotFound();
-            }
+        //    if (existingStanding == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            // Actualizar los datos del standing
-            existingStanding.Position = standingUpdateDto.Position;
-            existingStanding.Points = standingUpdateDto.Points;
-            existingStanding.MatchesPlayed = standingUpdateDto.MatchesPlayed;
+        //    // Actualizar los datos del standing
+        //    existingStanding.Position = standingUpdateDto.Position;
+        //    existingStanding.Points = standingUpdateDto.Points;
+        //    existingStanding.MatchesPlayed = standingUpdateDto.MatchesPlayed;
 
-            // Guardar los cambios en la base de datos
-            await _unitOfWork.StandingRepository.Update(existingStanding);
+        //    // Guardar los cambios en la base de datos
+        //    await _unitOfWork.StandingRepository.Update(existingStanding);
 
-            return Ok("Standing actualizado correctamente.");
-        }
+        //    return Ok("Standing actualizado correctamente.");
+        //}
 
         [HttpDelete("DeleteStanding/{standingId}")]
         public async Task<ActionResult> DeleteStanding(int standingId)

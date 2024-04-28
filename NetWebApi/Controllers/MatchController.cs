@@ -28,10 +28,10 @@ namespace NetWebApi.Controllers
             {
                 Id = match.Id,
                 MatchDate = match.MatchDate,
-                IdClubA = match.IdClubA,
-                IdClubB = match.IdClubB,
+                IdClubA = match.LocalClubId,
+                IdClubB = match.VisitorClubId,
                 IdStadium = match.IdStadium,
-                Result = match.Result
+                
 
             }).ToList();
 
@@ -54,10 +54,10 @@ namespace NetWebApi.Controllers
             {
                 Id = match.Id,
                 MatchDate = match.MatchDate,
-                IdClubA = match.IdClubA,
-                IdClubB = match.IdClubB,
+                IdClubA = match.LocalClubId,
+                IdClubB = match.VisitorClubId,
                 IdStadium = match.IdStadium,
-                Result = match.Result
+                
             };
 
             return Ok(matchDto);
@@ -74,10 +74,10 @@ namespace NetWebApi.Controllers
             var match = new Match
             {
                 MatchDate = matchPostDto.MatchDate,
-                IdClubA = matchPostDto.IdClubA,
-                IdClubB = matchPostDto.IdClubB,
-                IdStadium = matchPostDto.IdStadium,
-                Result = matchPostDto.Result
+                LocalClubId = matchPostDto.IdClubA,
+                VisitorClubId = matchPostDto.IdClubB,
+                IdStadium = matchPostDto.IdStadium
+                
             };
             await _unitOfWork.MatchRepository.Insert(match);
             var result = await _unitOfWork.Save();
@@ -101,7 +101,7 @@ namespace NetWebApi.Controllers
 
             // Actualizar los datos del match
             existingMatch.MatchDate = matchUpdateDto.MatchDate;
-            existingMatch.Result = matchUpdateDto.Result;
+           
 
             // Guardar los cambios en la base de datos
             await _unitOfWork.MatchRepository.Update(existingMatch);

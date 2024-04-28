@@ -13,6 +13,17 @@ namespace Repository.Configuration
         {
             builder.HasKey(e => e.Id);
             builder.Property(e => e.Id).ValueGeneratedOnAdd();
+
+            builder.HasData(
+                new Tournament
+                {
+                    Id = 1,
+                    Name= "Apertura 2024",
+                    StartDate = DateTime.Now,
+                    EndDate = new DateTime(2024,12,10),
+
+                }
+            );
         }
     }
 }

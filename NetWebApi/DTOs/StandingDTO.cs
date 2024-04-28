@@ -10,8 +10,8 @@ namespace NetWebApi.DTOs
 {
     public class StandingDto
     {
-        public int Id { get; set; }
-        public int Position { get; set; }
+        public int TournamentId { get; set; }
+        //public int Position { get; set; }
         public int Points { get; set; }
         public int MatchesPlayed { get; set; }
         public int IdClub { get; set; }
