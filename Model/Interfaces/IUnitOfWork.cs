@@ -14,6 +14,7 @@ namespace Model.Entities
         public IStadiumRepository StadiumRepository { get; }
         public IUserRepository UserRepository { get; }
         public IMatchRepository MatchRepository { get; }
+        public IStandingRepository StandingRepository { get; }
         public ITournamentRepository TournamentRepository { get; }
 
         Task<int> Save();

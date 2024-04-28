@@ -55,6 +55,12 @@ namespace Repository.Repositories
         public async Task<string> GetClubNameById(int id)
         {
             var club = await _context.Clubs.Where(c => c.Id == id).FirstOrDefaultAsync();
+            
+            if (club == null)
+            {
+                throw new InvalidOperationException("Club no encontrado.");
+            }
+
             var clubName = club.Name;
 
             return clubName;

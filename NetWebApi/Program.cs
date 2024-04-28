@@ -81,6 +81,7 @@ builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
 builder.Services.AddScoped<IStadiumRepository, StadiumRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IMatchRepository, MatchRepository>();
+builder.Services.AddScoped<IStandingRepository, StandingRepository>();
 builder.Services.AddScoped<ITournamentRepository, TournamentRepository>();
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>(
@@ -91,6 +92,7 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>(
         x.GetRequiredService<IStadiumRepository>(),
         x.GetRequiredService<IUserRepository>(),
         x.GetRequiredService<IMatchRepository>(),
+        x.GetRequiredService<IStandingRepository>(),
         x.GetRequiredService<ITournamentRepository>()
     ));
 //----------------------------------------------------------------
