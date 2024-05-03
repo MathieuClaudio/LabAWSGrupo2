@@ -36,6 +36,7 @@ namespace NetWebApi.Controllers
                     Tournament = (await _unitOfWork.TournamentRepository.GetTournamentNameById(standing.TournamentId)).ToString(),
                     IdClub = standing.IdClub,
                     Club = (await _unitOfWork.ClubRepository.GetClubNameById(standing.IdClub)).ToString(),
+                    //Win = standing.Win
                 };
 
                 standingsDtos.Add(standingDto);
