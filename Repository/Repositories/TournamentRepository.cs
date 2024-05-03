@@ -51,5 +51,19 @@ namespace Repository.Repositories
 
         }
 
+        public async Task<string> GetTournamentNameById(int id)
+        {
+            var tournament = await _context.Tournaments.Where(c => c.Id == id).FirstOrDefaultAsync();
+
+            if (tournament == null)
+            {
+                throw new InvalidOperationException("Torneo no encontrado.");
+            }
+
+            var tournamentName = tournament.Name;
+
+            return tournamentName;
+        }
+
     }
 }

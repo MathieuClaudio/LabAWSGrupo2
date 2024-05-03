@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Model.Entities;
 using NetWebApi.DTOs;
+using System.Numerics;
 
 namespace NetWebApi.Controllers
 {
@@ -21,61 +22,69 @@ namespace NetWebApi.Controllers
         public async Task<ActionResult<List<StandingDto>>> GetAll()
         {
             var standings = await _unitOfWork.StandingRepository.GetAll();
+            
 
             // Mapea los standinges a StandingDto
-            var standingDto = standings.Select(standing => new StandingDto
+            var standingsDtos = new List<StandingDto>();
+
+            foreach (var standing in standings)
             {
-                //Id = standing.Id,
-                //Position = standing.Position,
-                //Points = standing.Points,
-                //MatchesPlayed = standing.MatchesPlayed,
-                IdClub = standing.IdClub
-            }).ToList();
+                var standingDto = new StandingDto
+                {
+                    Id = standing.Id,
+                    TournamentId = standing.TournamentId,
+                    Tournament = (await _unitOfWork.TournamentRepository.GetTournamentNameById(standing.TournamentId)).ToString(),
+                    IdClub = standing.IdClub,
+                    Club = (await _unitOfWork.ClubRepository.GetClubNameById(standing.IdClub)).ToString(),
+                };
 
-            return Ok(standingDto);
-        }
-
-        [HttpGet("GetStandingById/{standingId}")]
-        public async Task<ActionResult<StandingDto>> GetStandingById(int standingId)
-        {
-            var standing = await _unitOfWork.StandingRepository.GetId(standingId);
-
-            if (standing == null)
-            {
-                return NotFound();
+                standingsDtos.Add(standingDto);
             }
 
-            var standingDto = new StandingDto
-            {
-                //Id = standing.Id,
-                //Position = standing.Position,
-                //Points = standing.Points,
-                //MatchesPlayed = standing.MatchesPlayed,
-                IdClub = standing.IdClub
-            };
-
-            return Ok(standingDto);
+            return Ok(standingsDtos);
         }
 
-        [HttpPost("InsertStanding")]
-        public async Task<ActionResult> InsertStanding(StandingPostDto standingPostDto)
-        {
-            if (standingPostDto == null)
-            {
-                return BadRequest("Datos NO válidos para crear standing.");
-            }
+        //[HttpGet("GetStandingById/{standingId}")]
+        //public async Task<ActionResult<StandingDto>> GetStandingById(int standingId)
+        //{
+        //    var standing = await _unitOfWork.StandingRepository.GetId(standingId);
 
-            var standing = new Standing
-            {
-                //Position = standingPostDto.Position,
-                //Points = standingPostDto.Points,
-                //MatchesPlayed = standingPostDto.MatchesPlayed,
-                IdClub = standingPostDto.IdClub
-            };
-            await _unitOfWork.StandingRepository.Insert(standing);
-            var result = await _unitOfWork.Save();
-            return Ok("Standing creado");
-        }
+        //    if (standing == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    var standingDto = new StandingDto
+        //    {
+        //        //Id = standing.Id,
+        //        //Position = standing.Position,
+        //        //Points = standing.Points,
+        //        //MatchesPlayed = standing.MatchesPlayed,
+        //        IdClub = standing.IdClub
+        //    };
+
+        //    return Ok(standingDto);
+        //}
+
+        //[HttpPost("InsertStanding")]
+        //public async Task<ActionResult> InsertStanding(StandingPostDto standingPostDto)
+        //{
+        //    if (standingPostDto == null)
+        //    {
+        //        return BadRequest("Datos NO válidos para crear standing.");
+        //    }
+
+        //    var standing = new Standing
+        //    {
+        //        //Position = standingPostDto.Position,
+        //        //Points = standingPostDto.Points,
+        //        //MatchesPlayed = standingPostDto.MatchesPlayed,
+        //        IdClub = standingPostDto.IdClub
+        //    };
+        //    await _unitOfWork.StandingRepository.Insert(standing);
+        //    var result = await _unitOfWork.Save();
+        //    return Ok("Standing creado");
+        //}
 
         //[HttpPut("UpdateStanding/{standingId}")]
         //public async Task<ActionResult> UpdateStanding(int standingId, StandingUpdateDto standingUpdateDto)
