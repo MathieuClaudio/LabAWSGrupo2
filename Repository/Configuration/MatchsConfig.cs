@@ -39,6 +39,7 @@ namespace Repository.Configuration
                     MatchDate = new DateTime(2024, 4, 15), // (año, mes, día),
                     LocalClubId = 1,
                     VisitorClubId = 2,
+                    IdTournament = 1,
                     IdStadium = 1
                     
                 },
@@ -48,6 +49,7 @@ namespace Repository.Configuration
                     MatchDate = new DateTime(2024, 4, 16),
                     LocalClubId = 3,
                     VisitorClubId = 4,
+                    IdTournament = 1,
                     IdStadium = 1
                 }
                 );

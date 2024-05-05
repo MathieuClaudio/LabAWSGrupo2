@@ -29,5 +29,6 @@ namespace NetWebApi.DTOs
 
         // Resultado del evento
         public MatchResult MatchResult { get; set; }
+
     }
 }
