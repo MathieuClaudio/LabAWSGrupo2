@@ -24,7 +24,7 @@ namespace NetWebApi.Controllers
             var standings = await _unitOfWork.StandingRepository.GetAll();
             
 
-            // Mapea los standinges a StandingDto
+            // Mapea los standings a StandingDto
             var standingsDtos = new List<StandingDto>();
 
             foreach (var standing in standings)
@@ -36,7 +36,7 @@ namespace NetWebApi.Controllers
                     Tournament = (await _unitOfWork.TournamentRepository.GetTournamentNameById(standing.TournamentId)).ToString(),
                     IdClub = standing.IdClub,
                     Club = (await _unitOfWork.ClubRepository.GetClubNameById(standing.IdClub)).ToString(),
-                    //Win = standing.Win
+                   //Win = standing.Win
                 };
 
                 standingsDtos.Add(standingDto);
@@ -45,27 +45,28 @@ namespace NetWebApi.Controllers
             return Ok(standingsDtos);
         }
 
-        //[HttpGet("GetStandingById/{standingId}")]
-        //public async Task<ActionResult<StandingDto>> GetStandingById(int standingId)
-        //{
-        //    var standing = await _unitOfWork.StandingRepository.GetId(standingId);
+        [HttpGet("GetStandingById/{standingId}")]
+        public async Task<ActionResult<StandingDto>> GetStandingById(int standingId)
+        {
+            var standing = await _unitOfWork.StandingRepository.GetId(standingId);
+            var matches = await _unitOfWork.MatchRepository.GetMatchesByTournamentId(standing.TournamentId);
 
-        //    if (standing == null)
-        //    {
-        //        return NotFound();
-        //    }
+            if (standing == null)
+            {
+                return NotFound();
+            }
 
-        //    var standingDto = new StandingDto
-        //    {
-        //        //Id = standing.Id,
-        //        //Position = standing.Position,
-        //        //Points = standing.Points,
-        //        //MatchesPlayed = standing.MatchesPlayed,
-        //        IdClub = standing.IdClub
-        //    };
+            var standingDto = new StandingDto
+            {
+                Id = standing.Id,
+                TournamentId = standing.TournamentId,
+                Tournament = (await _unitOfWork.TournamentRepository.GetTournamentNameById(standing.TournamentId)).ToString(),
+                IdClub = standing.IdClub,
+                Club = (await _unitOfWork.ClubRepository.GetClubNameById(standing.IdClub)).ToString(),
+            };
 
-        //    return Ok(standingDto);
-        //}
+            return Ok(standingDto);
+        }
 
         //[HttpPost("InsertStanding")]
         //public async Task<ActionResult> InsertStanding(StandingPostDto standingPostDto)

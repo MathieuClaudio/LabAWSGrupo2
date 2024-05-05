@@ -83,6 +83,7 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IMatchRepository, MatchRepository>();
 builder.Services.AddScoped<IStandingRepository, StandingRepository>();
 builder.Services.AddScoped<ITournamentRepository, TournamentRepository>();
+builder.Services.AddScoped<IMatchResultRepository, MatchResultRepository>();
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>(
     x => new UnitOfWork(
@@ -93,7 +94,8 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>(
         x.GetRequiredService<IUserRepository>(),
         x.GetRequiredService<IMatchRepository>(),
         x.GetRequiredService<IStandingRepository>(),
-        x.GetRequiredService<ITournamentRepository>()
+        x.GetRequiredService<ITournamentRepository>(),
+        x.GetRequiredService<IMatchResultRepository>()
     ));
 //----------------------------------------------------------------
 

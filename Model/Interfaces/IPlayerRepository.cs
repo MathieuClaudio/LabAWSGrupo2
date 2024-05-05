@@ -17,6 +17,6 @@ namespace Model.Entities
         Task<Player> Delete(int id);
 
         Task<List<Player>> GetPlayersByClub(int clubId);
-        
+
     }
 }
