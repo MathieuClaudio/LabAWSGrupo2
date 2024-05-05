@@ -29,11 +29,21 @@ namespace NetWebApi.Controllers
             }
 
 
-            // Mapea los matches a MathDto
+            // Mapea los matches a MatchDto
             var matchesDtos = new List<MatchDto>();
 
             foreach (var match in matches)
             {
+                var matchResult = await _unitOfWork.MatchResultRepository.GetMatchResult(match.Id);
+
+                var matchResultDto = new MatchResultDto
+                {
+                    Id = matchResult.Id,
+                    MatchId = matchResult.MatchId,
+                    LocalClubGoals = matchResult.LocalClubGoals,
+                    VisitorClubGoals = matchResult.VisitorClubGoals
+                };
+
                 var matchDto = new MatchDto
                 {
                     Id = match.Id,
@@ -42,7 +52,10 @@ namespace NetWebApi.Controllers
                     LocalClub = await _unitOfWork.ClubRepository.GetClubNameById(match.LocalClubId),
                     VisitorClubId = match.VisitorClubId,
                     VisitorClub = await _unitOfWork.ClubRepository.GetClubNameById(match.VisitorClubId),
-                    IdStadium = match.IdStadium
+                    IdStadium = match.IdStadium,
+                    LocalClubGoals = matchResultDto.LocalClubGoals,
+                    VisitorClubGoals = matchResultDto.VisitorClubGoals
+                    
                 };
 
                 matchesDtos.Add(matchDto);
@@ -57,6 +70,15 @@ namespace NetWebApi.Controllers
         public async Task<ActionResult<MatchDto>> GetMatchById(int matchId)
         {
             var match = await _unitOfWork.MatchRepository.GetId(matchId);
+            var matchResult = await _unitOfWork.MatchResultRepository.GetMatchResult(match.Id);
+
+            var matchResultDto = new MatchResultDto
+            {
+                Id = matchResult.Id,
+                MatchId = matchResult.MatchId,
+                LocalClubGoals = matchResult.LocalClubGoals,
+                VisitorClubGoals = matchResult.VisitorClubGoals
+            };
 
             if (match == null)
             {
@@ -72,7 +94,9 @@ namespace NetWebApi.Controllers
                 LocalClub = await _unitOfWork.ClubRepository.GetClubNameById(match.LocalClubId),
                 VisitorClubId = match.VisitorClubId,
                 VisitorClub = await _unitOfWork.ClubRepository.GetClubNameById(match.VisitorClubId),
-                IdStadium = match.IdStadium
+                IdStadium = match.IdStadium,
+                LocalClubGoals = matchResultDto.LocalClubGoals,
+                VisitorClubGoals = matchResultDto.VisitorClubGoals
 
             };
 
@@ -94,6 +118,16 @@ namespace NetWebApi.Controllers
 
             foreach (var tournamentMatch in tournamentMatches)
             {
+                var matchResult = await _unitOfWork.MatchResultRepository.GetMatchResult(tournamentMatch.Id);
+
+                var matchResultDto = new MatchResultDto
+                {
+                    Id = matchResult.Id,
+                    MatchId = matchResult.MatchId,
+                    LocalClubGoals = matchResult.LocalClubGoals,
+                    VisitorClubGoals = matchResult.VisitorClubGoals
+                };
+
                 var matchDto = new MatchDto
                 {
                     Id = tournamentMatch.Id,
@@ -102,7 +136,10 @@ namespace NetWebApi.Controllers
                     LocalClub = await _unitOfWork.ClubRepository.GetClubNameById(tournamentMatch.LocalClubId),
                     VisitorClubId = tournamentMatch.VisitorClubId,
                     VisitorClub = await _unitOfWork.ClubRepository.GetClubNameById(tournamentMatch.VisitorClubId),
-                    IdStadium = tournamentMatch.IdStadium
+                    IdStadium = tournamentMatch.IdStadium,
+                    LocalClubGoals = matchResultDto.LocalClubGoals,
+                    VisitorClubGoals = matchResultDto.VisitorClubGoals
+
                 };
 
                 matchesDtos.Add(matchDto);

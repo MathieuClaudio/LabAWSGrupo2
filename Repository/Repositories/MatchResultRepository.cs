@@ -49,5 +49,17 @@ namespace Repository.Repositories
             await _context.SaveChangesAsync();
             return matchResult;
         }
+
+        public async Task<MatchResult> GetMatchResult(int matchId)
+        {
+            var match = await _context.Matches.FindAsync(matchId);
+            if (match == null)
+                throw new InvalidOperationException("Match no encontrado.");
+            
+            var matchResult = await _context.MatchResults.Where(mr => mr.MatchId == matchId).FirstOrDefaultAsync();
+
+            return matchResult;
+
+        }
     }
 }

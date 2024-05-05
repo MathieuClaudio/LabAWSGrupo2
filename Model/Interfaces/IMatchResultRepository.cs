@@ -14,8 +14,8 @@ namespace Model.Interfaces
         Task<MatchResult> Insert(MatchResult matchResult);
         Task<MatchResult> Update(MatchResult matchResult);
         Task<MatchResult> Delete(int id);
+        Task<MatchResult> GetMatchResult(int matchId);
 
-        
 
     }
 }

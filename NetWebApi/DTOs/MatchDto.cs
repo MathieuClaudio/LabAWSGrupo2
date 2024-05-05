@@ -27,8 +27,8 @@ namespace NetWebApi.DTOs
         public int IdStadium { get; set; }
         public Stadium Venue { get; set; }
 
-        // Resultado del evento
-        public MatchResult MatchResult { get; set; }
+        public int LocalClubGoals { get; set; }
+        public int VisitorClubGoals { get; set; }
 
     }
 }
