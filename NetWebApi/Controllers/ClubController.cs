@@ -7,6 +7,7 @@ using Repository;
 using Microsoft.AspNetCore.JsonPatch;
 using Repository.Repositories;
 using Microsoft.AspNetCore.Authorization;
+using System.Collections.Generic;
 
 
 namespace NetWebApi.Controllers
@@ -35,14 +36,47 @@ namespace NetWebApi.Controllers
         {
             var clubs = await _unitOfWork.ClubRepository.GetAll();
 
-            // Mapea los clubes a ClubDto
-            var clubDto = clubs.Select(club => new ClubDto
-            {
-                Id = club.Id,
-                Name = club.Name
-            }).ToList();
+            // Mapea los clubes a ClubDto:
+            
+            var clubsDto = new List<ClubDto>();
 
-            return Ok(clubDto);
+            // recorro clubs
+            for (int i = 0; i < clubs.Count; i++)
+            {
+                // para cada club
+
+
+                // preparo lista DTO jugadores para cada club
+                var playersDto = new List<PlayerDto>();
+                
+                // traigo jugadores del club
+                var players = await _unitOfWork.PlayerRepository.GetPlayersByClub(clubs[i].Id);
+
+                // recorro lista jugadores de cada club y los guardo en nueva lista dto
+                for (int j = 0; j < players.Count; j++)
+                {
+                    var playerDto = new PlayerDto()
+                    {
+                        Id = players[j].Id,
+                        FullName = players[j].FullName,
+                        Age = players[j].Age,
+                        Number = players[j].Number,
+                        ClubName = await _unitOfWork.ClubRepository.GetClubNameById(players[j].ClubId)
+                    };
+                    playersDto.Add(playerDto);
+                }
+
+                var clubDto = new ClubDto()
+                {
+                    Id = clubs[i].Id,
+                    Name = clubs[i].Name,
+                    Players = playersDto
+                };
+                clubsDto.Add(clubDto);
+            }
+
+
+            return Ok(clubsDto);
         }
 
         [HttpGet("GetClubById/{clubId}")]
@@ -66,7 +100,8 @@ namespace NetWebApi.Controllers
                     Id = clubPlayers[i].Id,
                     FullName = clubPlayers[i].FullName,
                     Age = clubPlayers[i].Age,
-                    Number = clubPlayers[i].Number
+                    Number = clubPlayers[i].Number,
+                    ClubName = await _unitOfWork.ClubRepository.GetClubNameById(clubPlayers[i].ClubId),
                 };
                 players.Add(playerDto);
             }

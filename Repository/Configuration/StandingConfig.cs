@@ -25,38 +25,36 @@ namespace Repository.Configuration
                    .HasForeignKey(e => e.IdClub)
                    .OnDelete(DeleteBehavior.Restrict);
 
+            builder.HasOne(e => e.Tournament)
+                   .WithMany()
+                   .HasForeignKey(e => e.TournamentId)
+                   .OnDelete(DeleteBehavior.Restrict);
+
             // Seedyng
             builder.HasData(
                 new Standing
                 {
                     Id = 1,
-                    Position = 1,
-                    Points = 12,
-                    MatchesPlayed = 6,
+                    TournamentId = 1,
                     IdClub = 1
+
                 },
                 new Standing
                 {
                     Id = 2,
-                    Position = 2,
-                    Points = 10,
-                    MatchesPlayed = 5,
+                    TournamentId = 1,
                     IdClub = 2
                 },
                 new Standing
                 {
                     Id = 3,
-                    Position = 3,
-                    Points = 8,
-                    MatchesPlayed = 4,
+                    TournamentId = 1,
                     IdClub = 3
                 },
                 new Standing
                 {
                     Id = 4,
-                    Position = 4,
-                    Points = 7,
-                    MatchesPlayed = 4,
+                    TournamentId = 1,
                     IdClub = 4
                 }
                 );

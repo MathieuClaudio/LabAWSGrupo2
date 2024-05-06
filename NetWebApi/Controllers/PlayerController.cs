@@ -5,6 +5,7 @@ using Model.Entities;
 using NetWebApi.DTOs;
 using Repository;
 using Repository.Repositories;
+using System.Numerics;
 
 namespace NetWebApi.Controllers
 {
@@ -29,13 +30,22 @@ namespace NetWebApi.Controllers
         {
             var players = await _unitOfWork.PlayerRepository.GetAll();
 
-            var playerDto = players.Select(player => new PlayerDto{
-                Id = player.Id,
-                FullName = player.FullName,
-                Age = player.Age,
-                Number = player.Number
-            }).ToList();
-            return Ok(playerDto);
+            var playersDto = new List<PlayerDto>();
+
+            for (int i = 0; i < players.Count; i++)
+            {
+                var playerDto = new PlayerDto()
+                {
+                    Id = players[i].Id,
+                    FullName = players[i].FullName,
+                    Age = players[i].Age,
+                    Number = players[i].Number,
+                    ClubName = await _unitOfWork.ClubRepository.GetClubNameById(players[i].ClubId)
+                };
+                playersDto.Add(playerDto);
+            }
+           
+            return Ok(playersDto);
 
         }
 
@@ -51,9 +61,11 @@ namespace NetWebApi.Controllers
 
             var playerDto = new PlayerDto
             {
+                Id = playerId,
                 FullName = player.FullName,
                 Age = player.Age,
-                Number = player.Number
+                Number = player.Number,
+                ClubName = await _unitOfWork.ClubRepository.GetClubNameById(player.ClubId)
             };
             return Ok(playerDto);
 

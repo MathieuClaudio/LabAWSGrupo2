@@ -14,5 +14,8 @@ namespace Model.Entities
 
         // Relación One-to-Many
         public List<Player> Players { get; set; }
+
+        // relación many-to-many (un torneo muchos clubs, un clubs muchos torneos) - "Torneos que juega o jugó el club"
+        //public List<TournamentClub> Tournaments { get; set; }
     }
 }
