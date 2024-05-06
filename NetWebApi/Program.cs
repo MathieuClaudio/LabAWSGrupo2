@@ -11,10 +11,16 @@ using System.Text;
 using Model.Interfaces;
 using Microsoft.OpenApi.Models;
 using System.Text.Json.Serialization;
+using NetWebApi.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
+//builder.Services.AddControllers(
+//    options =>
+//    {
+//        options.Filters.Add<CustomExceptionFilter>();
+//    }
+//);
 builder.Services.AddTransient<ApplicationDbContext>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -119,5 +125,6 @@ app.UseAuthentication(); // JWT
 app.UseAuthorization();
 
 app.MapControllers();
+app.UseMiddleware<ExceptionMiddleware>();
 
 app.Run();
