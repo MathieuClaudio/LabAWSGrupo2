@@ -15,7 +15,7 @@ namespace Model.Interfaces
         Task<MatchResult> Update(MatchResult matchResult);
         Task<MatchResult> Delete(int id);
         Task<MatchResult> GetMatchResult(int matchId);
-
+        Task<List<MatchResult>> GetMatchResultsByStandingId(int standingId);
 
     }
 }

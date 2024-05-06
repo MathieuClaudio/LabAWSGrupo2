@@ -19,7 +19,7 @@ namespace Repository.Repositories
 
         public async Task<Standing> GetId(int id)
         {
-            var result = await _context.Standings.FirstOrDefaultAsync(standing => standing.IdClub == id);
+            var result = await _context.Standings.FirstOrDefaultAsync(standing => standing.Id == id);
             return result;
         }
 
@@ -50,6 +50,10 @@ namespace Repository.Repositories
             return standing;
 
         }
+
+        
+
+        
 
     }
 }

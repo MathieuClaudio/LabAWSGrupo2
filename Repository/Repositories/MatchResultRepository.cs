@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Model.Entities;
 using Model.Interfaces;
+using System.Text.RegularExpressions;
 
 namespace Repository.Repositories
 {
@@ -60,6 +61,27 @@ namespace Repository.Repositories
 
             return matchResult;
 
+        }
+
+        // get match results by standing (para usar en controller de standing)
+        public async Task<List<MatchResult>> GetMatchResultsByStandingId(int standingId)
+        {
+            var standing = await _context.Standings.FindAsync(standingId);
+            if (standing == null)
+                throw new InvalidOperationException("Standing no encontrado.");
+
+            // obtengo partidos asociado a club del standing
+            var matches = await _context.Matches.Where(m => (m.LocalClubId == standing.IdClub) || (m.VisitorClubId == standing.IdClub)).ToListAsync();
+
+            var matchResults = new List<MatchResult>();
+
+            foreach (var match in matches)
+            {
+                var matchResult = await this.GetMatchResult(match.Id);
+                matchResults.Add(matchResult);
+            }
+
+            return matchResults;
         }
     }
 }

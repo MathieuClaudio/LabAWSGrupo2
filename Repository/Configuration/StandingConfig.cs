@@ -37,6 +37,7 @@ namespace Repository.Configuration
                     Id = 1,
                     TournamentId = 1,
                     IdClub = 1
+
                 },
                 new Standing
                 {

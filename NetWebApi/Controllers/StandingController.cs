@@ -29,6 +29,12 @@ namespace NetWebApi.Controllers
 
             foreach (var standing in standings)
             {
+                // obtengo lista match results 
+                var results = await _unitOfWork.MatchResultRepository.GetMatchResultsByStandingId(standing.IdClub);
+
+                // seteo lista en objeto para calcular propiedades.
+                standing.MatchResults = results;
+
                 var standingDto = new StandingDto
                 {
                     Id = standing.Id,
@@ -36,7 +42,11 @@ namespace NetWebApi.Controllers
                     Tournament = (await _unitOfWork.TournamentRepository.GetTournamentNameById(standing.TournamentId)).ToString(),
                     IdClub = standing.IdClub,
                     Club = (await _unitOfWork.ClubRepository.GetClubNameById(standing.IdClub)).ToString(),
-                   //Win = standing.Win
+                    Win = standing.Win,
+                    Loss = standing.Loss,
+                    Draw = standing.Draw,
+                    MatchesPlayed = standing.MatchesPlayed,
+                    Points = standing.Points
                 };
 
                 standingsDtos.Add(standingDto);
@@ -49,13 +59,20 @@ namespace NetWebApi.Controllers
         public async Task<ActionResult<StandingDto>> GetStandingById(int standingId)
         {
             var standing = await _unitOfWork.StandingRepository.GetId(standingId);
-            var matches = await _unitOfWork.MatchRepository.GetMatchesByTournamentId(standing.TournamentId);
-
+                                    
             if (standing == null)
             {
                 return NotFound();
             }
 
+            
+            // obtengo lista match results 
+            var results = await _unitOfWork.MatchResultRepository.GetMatchResultsByStandingId(standing.IdClub);
+
+            // seteo lista en objeto para calcular propiedades.
+            standing.MatchResults = results;
+
+            // mapeo de Dto para devolver respuesta
             var standingDto = new StandingDto
             {
                 Id = standing.Id,
@@ -63,56 +80,17 @@ namespace NetWebApi.Controllers
                 Tournament = (await _unitOfWork.TournamentRepository.GetTournamentNameById(standing.TournamentId)).ToString(),
                 IdClub = standing.IdClub,
                 Club = (await _unitOfWork.ClubRepository.GetClubNameById(standing.IdClub)).ToString(),
+                Win = standing.Win,
+                Loss = standing.Loss,
+                Draw = standing.Draw,
+                MatchesPlayed = standing.MatchesPlayed,
+                Points = standing.Points
             };
 
             return Ok(standingDto);
         }
 
-        //[HttpPost("InsertStanding")]
-        //public async Task<ActionResult> InsertStanding(StandingPostDto standingPostDto)
-        //{
-        //    if (standingPostDto == null)
-        //    {
-        //        return BadRequest("Datos NO válidos para crear standing.");
-        //    }
-
-        //    var standing = new Standing
-        //    {
-        //        //Position = standingPostDto.Position,
-        //        //Points = standingPostDto.Points,
-        //        //MatchesPlayed = standingPostDto.MatchesPlayed,
-        //        IdClub = standingPostDto.IdClub
-        //    };
-        //    await _unitOfWork.StandingRepository.Insert(standing);
-        //    var result = await _unitOfWork.Save();
-        //    return Ok("Standing creado");
-        //}
-
-        //[HttpPut("UpdateStanding/{standingId}")]
-        //public async Task<ActionResult> UpdateStanding(int standingId, StandingUpdateDto standingUpdateDto)
-        //{
-        //    if (standingUpdateDto == null || standingId != standingUpdateDto.Id)
-        //    {
-        //        return BadRequest("Datos no válidos para actualizar el standing.");
-        //    }
-
-        //    var existingStanding = await _unitOfWork.StandingRepository.GetId(standingId);
-
-        //    if (existingStanding == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    // Actualizar los datos del standing
-        //    existingStanding.Position = standingUpdateDto.Position;
-        //    existingStanding.Points = standingUpdateDto.Points;
-        //    existingStanding.MatchesPlayed = standingUpdateDto.MatchesPlayed;
-
-        //    // Guardar los cambios en la base de datos
-        //    await _unitOfWork.StandingRepository.Update(existingStanding);
-
-        //    return Ok("Standing actualizado correctamente.");
-        //}
+        
 
         [HttpDelete("DeleteStanding/{standingId}")]
         public async Task<ActionResult> DeleteStanding(int standingId)
