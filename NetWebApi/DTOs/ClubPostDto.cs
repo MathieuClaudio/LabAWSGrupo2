@@ -10,6 +10,8 @@ namespace NetWebApi.DTOs
     public class ClubPostDto
     {
         // Nombre del Club
+        [Required(ErrorMessage = "El nombre del club es obligatorio.")]
+        [MaxLength(50, ErrorMessage = "El nombre del club no puede tener más de 50 caracteres.")]
         public string Name { get; set; }
     }
 }

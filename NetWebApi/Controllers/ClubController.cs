@@ -36,6 +36,7 @@ namespace NetWebApi.Controllers
         {
             var clubs = await _unitOfWork.ClubRepository.GetAll();
 
+
             // Mapea los clubes a ClubDto:
             
             var clubsDto = new List<ClubDto>();

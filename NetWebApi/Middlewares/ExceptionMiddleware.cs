@@ -8,12 +8,15 @@ namespace NetWebApi.Middlewares
     public class ExceptionMiddleware
     {
         private readonly RequestDelegate _next;
-        public ExceptionMiddleware(RequestDelegate next)
+        private readonly ILogger<ExceptionMiddleware> _logger;
+
+        public ExceptionMiddleware(RequestDelegate next, ILogger<ExceptionMiddleware> logger)
         {
             _next = next;
+            _logger = logger;
         }
 
-        public async Task Invoke(HttpContext context, ILogger<ExceptionMiddleware> logger)
+        public async Task InvokeAsync(HttpContext context)
         {
             try
             {
@@ -22,8 +25,12 @@ namespace NetWebApi.Middlewares
             }
             catch (Exception ex)
             {
+                // Log de la excepción
+                _logger.LogError($"Se ha producido una excepción: {ex}");
 
-
+                // Devuelve una respuesta al cliente
+                context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+                await context.Response.WriteAsync("Error interno del servidor.");
             }
         }
 
