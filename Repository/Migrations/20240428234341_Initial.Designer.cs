@@ -12,8 +12,8 @@ using Repository;
 namespace Repository.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240414192845_Add-Matches")]
-    partial class AddMatches
+    [Migration("20240428234341_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -38,7 +38,12 @@ namespace Repository.Migrations
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
 
+                    b.Property<int?>("TournamentId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("TournamentId");
 
                     b.ToTable("Clubs");
 
@@ -103,28 +108,33 @@ namespace Repository.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("IdClubA")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdClubB")
-                        .HasColumnType("int");
-
                     b.Property<int>("IdStadium")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdTournament")
+                        .HasColumnType("int");
+
+                    b.Property<int>("LocalClubId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("MatchDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Result")
-                        .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
+                    b.Property<int?>("TournamentId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("VisitorClubId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("IdClubA");
-
                     b.HasIndex("IdStadium");
+
+                    b.HasIndex("LocalClubId");
+
+                    b.HasIndex("TournamentId");
+
+                    b.HasIndex("VisitorClubId");
 
                     b.ToTable("Matches");
 
@@ -132,20 +142,65 @@ namespace Repository.Migrations
                         new
                         {
                             Id = 1,
-                            IdClubA = 1,
-                            IdClubB = 2,
                             IdStadium = 1,
+                            IdTournament = 0,
+                            LocalClubId = 1,
                             MatchDate = new DateTime(2024, 4, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Result = "1 a 0"
+                            VisitorClubId = 2
                         },
                         new
                         {
                             Id = 2,
-                            IdClubA = 3,
-                            IdClubB = 4,
                             IdStadium = 1,
+                            IdTournament = 0,
+                            LocalClubId = 3,
                             MatchDate = new DateTime(2024, 4, 16, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Result = "3 a 1"
+                            VisitorClubId = 4
+                        });
+                });
+
+            modelBuilder.Entity("Model.Entities.MatchResult", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("LocalClubGoals")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MatchId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("StandingId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("VisitorClubGoals")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MatchId");
+
+                    b.HasIndex("StandingId");
+
+                    b.ToTable("MatchResults");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            LocalClubGoals = 3,
+                            MatchId = 1,
+                            VisitorClubGoals = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            LocalClubGoals = 1,
+                            MatchId = 2,
+                            VisitorClubGoals = 0
                         });
                 });
 
@@ -403,6 +458,93 @@ namespace Repository.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Model.Entities.Standing", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("IdClub")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TournamentId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("TournamentId1")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IdClub");
+
+                    b.HasIndex("TournamentId");
+
+                    b.HasIndex("TournamentId1");
+
+                    b.ToTable("Standings");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            IdClub = 1,
+                            TournamentId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            IdClub = 2,
+                            TournamentId = 1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            IdClub = 3,
+                            TournamentId = 1
+                        },
+                        new
+                        {
+                            Id = 4,
+                            IdClub = 4,
+                            TournamentId = 1
+                        });
+                });
+
+            modelBuilder.Entity("Model.Entities.Tournament", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Tournaments");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            EndDate = new DateTime(2024, 12, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Apertura 2024",
+                            StartDate = new DateTime(2024, 4, 28, 20, 43, 41, 183, DateTimeKind.Local).AddTicks(9926)
+                        });
+                });
+
             modelBuilder.Entity("Model.Entities.User", b =>
                 {
                     b.Property<int>("Id")
@@ -454,23 +596,57 @@ namespace Repository.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Model.Entities.Club", b =>
+                {
+                    b.HasOne("Model.Entities.Tournament", null)
+                        .WithMany("Clubs")
+                        .HasForeignKey("TournamentId");
+                });
+
             modelBuilder.Entity("Model.Entities.Match", b =>
                 {
-                    b.HasOne("Model.Entities.Club", "Club")
-                        .WithMany()
-                        .HasForeignKey("IdClubA")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("Model.Entities.Stadium", "Venue")
                         .WithMany()
                         .HasForeignKey("IdStadium")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("Club");
+                    b.HasOne("Model.Entities.Club", "LocalClub")
+                        .WithMany()
+                        .HasForeignKey("LocalClubId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Model.Entities.Tournament", null)
+                        .WithMany("Matches")
+                        .HasForeignKey("TournamentId");
+
+                    b.HasOne("Model.Entities.Club", "VisitorClub")
+                        .WithMany()
+                        .HasForeignKey("VisitorClubId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("LocalClub");
 
                     b.Navigation("Venue");
+
+                    b.Navigation("VisitorClub");
+                });
+
+            modelBuilder.Entity("Model.Entities.MatchResult", b =>
+                {
+                    b.HasOne("Model.Entities.Match", "Match")
+                        .WithMany()
+                        .HasForeignKey("MatchId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Model.Entities.Standing", null)
+                        .WithMany("MatchResults")
+                        .HasForeignKey("StandingId");
+
+                    b.Navigation("Match");
                 });
 
             modelBuilder.Entity("Model.Entities.Player", b =>
@@ -484,9 +660,46 @@ namespace Repository.Migrations
                     b.Navigation("Club");
                 });
 
+            modelBuilder.Entity("Model.Entities.Standing", b =>
+                {
+                    b.HasOne("Model.Entities.Club", "Club")
+                        .WithMany()
+                        .HasForeignKey("IdClub")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Model.Entities.Tournament", "Tournament")
+                        .WithMany()
+                        .HasForeignKey("TournamentId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Model.Entities.Tournament", null)
+                        .WithMany("Standing")
+                        .HasForeignKey("TournamentId1");
+
+                    b.Navigation("Club");
+
+                    b.Navigation("Tournament");
+                });
+
             modelBuilder.Entity("Model.Entities.Club", b =>
                 {
                     b.Navigation("Players");
+                });
+
+            modelBuilder.Entity("Model.Entities.Standing", b =>
+                {
+                    b.Navigation("MatchResults");
+                });
+
+            modelBuilder.Entity("Model.Entities.Tournament", b =>
+                {
+                    b.Navigation("Clubs");
+
+                    b.Navigation("Matches");
+
+                    b.Navigation("Standing");
                 });
 #pragma warning restore 612, 618
         }

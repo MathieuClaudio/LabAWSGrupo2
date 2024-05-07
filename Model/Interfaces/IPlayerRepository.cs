@@ -1,4 +1,5 @@
-﻿using Model.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using Model.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,8 @@ namespace Model.Entities
         Task<Player> Insert(Player player);
         Task<Player> Update(Player player);
         Task<Player> Delete(int id);
-        
+
+        Task<List<Player>> GetPlayersByClub(int clubId);
+
     }
 }

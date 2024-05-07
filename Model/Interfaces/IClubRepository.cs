@@ -15,5 +15,9 @@ namespace Model.Entities
         Task<Club> Insert(Club club);
         Task<Club> Update(Club club);
         Task<Club> Delete(int id);
+        Task<string> GetClubNameById(int id);
+
+
+
     }
 }

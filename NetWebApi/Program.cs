@@ -10,12 +10,23 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Model.Interfaces;
 using Microsoft.OpenApi.Models;
+using System.Text.Json.Serialization;
+using NetWebApi.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
+//builder.Services.AddControllers(
+//    options =>
+//    {
+//        options.Filters.Add<CustomExceptionFilter>();
+//    }
+//);
+builder.Services.AddTransient<ApplicationDbContext>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
+// Para errores Object Cycles: (para que no se quede en loop cuando tenes many-to-many) 
+builder.Services.AddControllers().AddJsonOptions(x =>
+                x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
 //---------------------------------------JWT Swagger-----------------------------
 builder.Services.AddSwaggerGen(option =>
@@ -78,6 +89,7 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IMatchRepository, MatchRepository>();
 builder.Services.AddScoped<IStandingRepository, StandingRepository>();
 builder.Services.AddScoped<ITournamentRepository, TournamentRepository>();
+builder.Services.AddScoped<IMatchResultRepository, MatchResultRepository>();
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>(
     x => new UnitOfWork(
@@ -88,7 +100,8 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>(
         x.GetRequiredService<IUserRepository>(),
         x.GetRequiredService<IMatchRepository>(),
         x.GetRequiredService<IStandingRepository>(),
-        x.GetRequiredService<ITournamentRepository>()
+        x.GetRequiredService<ITournamentRepository>(),
+        x.GetRequiredService<IMatchResultRepository>()
     ));
 //----------------------------------------------------------------
 
@@ -112,5 +125,6 @@ app.UseAuthentication(); // JWT
 app.UseAuthorization();
 
 app.MapControllers();
+app.UseMiddleware<ExceptionMiddleware>();
 
 app.Run();

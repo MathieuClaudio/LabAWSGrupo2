@@ -14,7 +14,7 @@ namespace NetWebApi.DTOs
         public string Name { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
-        public List<Standing> Standing { get; set; }
+        //public List<Standing> Standing { get; set; }
         public List<Match> Matches { get; set; }
         public List<Club> Clubs { get; set; }
     }

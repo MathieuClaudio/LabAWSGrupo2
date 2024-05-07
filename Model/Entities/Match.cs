@@ -16,19 +16,21 @@ namespace Model.Entities
         public DateTime MatchDate { get; set; }
 
         // Equipo A
-        public int IdClubA { get; set; }
-        public Club ClubA { get; set; }
+        public int LocalClubId { get; set; }
+        public Club LocalClub { get; set; }
 
         // Equipo B
-        public int IdClubB { get; set; }
-        public Club ClubB { get; set; }
+        public int VisitorClubId { get; set; }
+        public Club VisitorClub { get; set; }
+
+        // Vinculo a torneo
+        public int IdTournament { get; set; }
 
         // Estadio del evento
         public int IdStadium { get; set; }
         public Stadium Venue { get; set; }
 
-        // Resultado del evento
-        public string Result { get; set; }
+        
 
     }
 }

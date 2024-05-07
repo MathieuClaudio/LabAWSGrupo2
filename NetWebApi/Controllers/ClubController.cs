@@ -7,13 +7,14 @@ using Repository;
 using Microsoft.AspNetCore.JsonPatch;
 using Repository.Repositories;
 using Microsoft.AspNetCore.Authorization;
+using System.Collections.Generic;
 
 
 namespace NetWebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class ClubController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -30,58 +31,89 @@ namespace NetWebApi.Controllers
         /// AutoMapper.AutoMapperMappingException: Error mapping types.
         /// <returns></returns>
         [HttpGet("GetAll")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public async Task<ActionResult<List<ClubDto>>> GetAll()
         {
             var clubs = await _unitOfWork.ClubRepository.GetAll();
 
-            var clubDtos = new List<ClubDto>();
+            // Mapea los clubes a ClubDto:
+            
+            var clubsDto = new List<ClubDto>();
 
-            foreach (var club in clubs)
+            // recorro clubs
+            for (int i = 0; i < clubs.Count; i++)
             {
-                var players = await _unitOfWork.PlayerRepository.GetPlayersByClubId(club.Id);
+                // para cada club
 
-                var clubDto = new ClubDto
+
+                // preparo lista DTO jugadores para cada club
+                var playersDto = new List<PlayerDto>();
+                
+                // traigo jugadores del club
+                var players = await _unitOfWork.PlayerRepository.GetPlayersByClub(clubs[i].Id);
+
+                // recorro lista jugadores de cada club y los guardo en nueva lista dto
+                for (int j = 0; j < players.Count; j++)
                 {
-                    Id = club.Id,
-                    Name = club.Name,
-                    Players = players.Select(player => new PlayerDto
+                    var playerDto = new PlayerDto()
                     {
-                        FullName = player.FullName,
-                        Age = player.Age,
-                        Number = player.Number
-                    }).ToList()
-                };
+                        Id = players[j].Id,
+                        FullName = players[j].FullName,
+                        Age = players[j].Age,
+                        Number = players[j].Number,
+                        ClubName = await _unitOfWork.ClubRepository.GetClubNameById(players[j].ClubId)
+                    };
+                    playersDto.Add(playerDto);
+                }
 
-                clubDtos.Add(clubDto);
+                var clubDto = new ClubDto()
+                {
+                    Id = clubs[i].Id,
+                    Name = clubs[i].Name,
+                    Players = playersDto
+                };
+                clubsDto.Add(clubDto);
             }
 
-            return Ok(clubDtos);
+
+            return Ok(clubsDto);
         }
 
         [HttpGet("GetClubById/{clubId}")]
-        [AllowAnonymous]
         public async Task<ActionResult<ClubDto>> GetClubById(int clubId)
         {
             var club = await _unitOfWork.ClubRepository.GetId(clubId);
-            var players = await _unitOfWork.PlayerRepository.GetPlayersByClubId(clubId);
+            var clubPlayers = await _unitOfWork.PlayerRepository.GetPlayersByClub(clubId);
 
             if (club == null)
             {
                 return NotFound(); // Devuelve un 404 si el club no se encuentra
             }
 
+            // se utiliza un Dto de Player para evitar bucle si se utilizara la entidad Player, que tiene atributo club id
+            var players = new List<PlayerDto>();
+
+            for (int i = 0; i < clubPlayers.Count; i++)
+            {
+                var playerDto = new PlayerDto
+                {
+                    Id = clubPlayers[i].Id,
+                    FullName = clubPlayers[i].FullName,
+                    Age = clubPlayers[i].Age,
+                    Number = clubPlayers[i].Number,
+                    ClubName = await _unitOfWork.ClubRepository.GetClubNameById(clubPlayers[i].ClubId),
+                };
+                players.Add(playerDto);
+            }
+
+
             // Mapea el club a ClubDto
             var clubDto = new ClubDto
             {
+                Id = club.Id,   
                 Name = club.Name,
-                Players = players.Select(player => new PlayerDto
-                {
-                    FullName = player.FullName,
-                    Age = player.Age,
-                    Number = player.Number
+                Players =  players
 
-                }).ToList()
             };
 
             return Ok(clubDto);

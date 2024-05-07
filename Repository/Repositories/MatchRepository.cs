@@ -51,5 +51,12 @@ namespace Repository.Repositories
 
         }
 
+        // método que traiga partidos de un torneo (tournamentId)
+        public async Task<List<Match>> GetMatchesByTournamentId(int tournamentId)
+        {
+            var tournamentMatches = await _context.Matches.Where(m => m.IdTournament == tournamentId).ToListAsync();
+            return tournamentMatches;
+        }
+
     }
 }
