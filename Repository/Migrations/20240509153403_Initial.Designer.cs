@@ -12,8 +12,8 @@ using Repository;
 namespace Repository.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240505162210_matchClassWithIdTournament")]
-    partial class matchClassWithIdTournament
+    [Migration("20240509153403_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -410,6 +410,94 @@ namespace Repository.Migrations
                             ClubId = 2,
                             FullName = "HERRERA Marcelo Andrés",
                             Number = 14
+                        },
+                        new
+                        {
+                            Id = 23,
+                            Age = 34,
+                            ClubId = 3,
+                            FullName = "Diego Rodríguezs",
+                            Number = 50
+                        },
+                        new
+                        {
+                            Id = 24,
+                            Age = 34,
+                            ClubId = 3,
+                            FullName = "Fernando Meza",
+                            Number = 18
+                        },
+                        new
+                        {
+                            Id = 25,
+                            Age = 24,
+                            ClubId = 3,
+                            FullName = "Francisco Álvarez",
+                            Number = 16
+                        },
+                        new
+                        {
+                            Id = 26,
+                            Age = 31,
+                            ClubId = 3,
+                            FullName = "Jonathan Galván",
+                            Number = 19
+                        },
+                        new
+                        {
+                            Id = 27,
+                            Age = 20,
+                            ClubId = 3,
+                            FullName = "Román Vega",
+                            Number = 6
+                        },
+                        new
+                        {
+                            Id = 28,
+                            Age = 22,
+                            ClubId = 3,
+                            FullName = "Alan Lescano ",
+                            Number = 22
+                        },
+                        new
+                        {
+                            Id = 29,
+                            Age = 26,
+                            ClubId = 3,
+                            FullName = "Franco Moyano",
+                            Number = 17
+                        },
+                        new
+                        {
+                            Id = 30,
+                            Age = 30,
+                            ClubId = 3,
+                            FullName = "Nicolás Oroz",
+                            Number = 21
+                        },
+                        new
+                        {
+                            Id = 31,
+                            Age = 20,
+                            ClubId = 3,
+                            FullName = "José Herrera",
+                            Number = 26
+                        },
+                        new
+                        {
+                            Id = 32,
+                            Age = 22,
+                            ClubId = 3,
+                            FullName = "Luciano Gondou",
+                            Number = 32
+                        },
+                        new
+                        {
+                            Id = 33,
+                            Age = 25,
+                            ClubId = 3,
+                            FullName = "Maximiliano Romero",
+                            Number = 9
                         });
                 });
 
@@ -541,7 +629,7 @@ namespace Repository.Migrations
                             Id = 1,
                             EndDate = new DateTime(2024, 12, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Apertura 2024",
-                            StartDate = new DateTime(2024, 5, 5, 13, 22, 9, 499, DateTimeKind.Local).AddTicks(4009)
+                            StartDate = new DateTime(2024, 5, 9, 12, 34, 2, 769, DateTimeKind.Local).AddTicks(7127)
                         });
                 });
 

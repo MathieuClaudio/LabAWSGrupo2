@@ -626,7 +626,7 @@ namespace Repository.Migrations
                             Id = 1,
                             EndDate = new DateTime(2024, 12, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Apertura 2024",
-                            StartDate = new DateTime(2024, 5, 5, 13, 22, 9, 499, DateTimeKind.Local).AddTicks(4009)
+                            StartDate = new DateTime(2024, 5, 9, 12, 34, 2, 769, DateTimeKind.Local).AddTicks(7127)
                         });
                 });
 

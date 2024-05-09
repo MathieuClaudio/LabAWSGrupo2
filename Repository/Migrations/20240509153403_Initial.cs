@@ -229,7 +229,7 @@ namespace Repository.Migrations
             migrationBuilder.InsertData(
                 table: "Tournaments",
                 columns: new[] { "Id", "EndDate", "Name", "StartDate" },
-                values: new object[] { 1, new DateTime(2024, 12, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), "Apertura 2024", new DateTime(2024, 4, 28, 20, 43, 41, 183, DateTimeKind.Local).AddTicks(9926) });
+                values: new object[] { 1, new DateTime(2024, 12, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), "Apertura 2024", new DateTime(2024, 5, 9, 12, 34, 2, 769, DateTimeKind.Local).AddTicks(7127) });
 
             migrationBuilder.InsertData(
                 table: "Users",
@@ -246,8 +246,8 @@ namespace Repository.Migrations
                 columns: new[] { "Id", "IdStadium", "IdTournament", "LocalClubId", "MatchDate", "TournamentId", "VisitorClubId" },
                 values: new object[,]
                 {
-                    { 1, 1, 0, 1, new DateTime(2024, 4, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 2 },
-                    { 2, 1, 0, 3, new DateTime(2024, 4, 16, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 4 }
+                    { 1, 1, 1, 1, new DateTime(2024, 4, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 2 },
+                    { 2, 1, 1, 3, new DateTime(2024, 4, 16, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 4 }
                 });
 
             migrationBuilder.InsertData(
@@ -276,7 +276,18 @@ namespace Repository.Migrations
                     { 19, 31, 2, "LANZINI Manuel", 10 },
                     { 20, 28, 2, "DÍAZ Enzo", 13 },
                     { 21, 32, 2, "GONZÁLEZ PIREZ Leandro", 14 },
-                    { 22, 25, 2, "HERRERA Marcelo Andrés", 14 }
+                    { 22, 25, 2, "HERRERA Marcelo Andrés", 14 },
+                    { 23, 34, 3, "Diego Rodríguezs", 50 },
+                    { 24, 34, 3, "Fernando Meza", 18 },
+                    { 25, 24, 3, "Francisco Álvarez", 16 },
+                    { 26, 31, 3, "Jonathan Galván", 19 },
+                    { 27, 20, 3, "Román Vega", 6 },
+                    { 28, 22, 3, "Alan Lescano ", 22 },
+                    { 29, 26, 3, "Franco Moyano", 17 },
+                    { 30, 30, 3, "Nicolás Oroz", 21 },
+                    { 31, 20, 3, "José Herrera", 26 },
+                    { 32, 22, 3, "Luciano Gondou", 32 },
+                    { 33, 25, 3, "Maximiliano Romero", 9 }
                 });
 
             migrationBuilder.InsertData(
