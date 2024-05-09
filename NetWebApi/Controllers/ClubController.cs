@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.JsonPatch;
 using Repository.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using System.Collections.Generic;
+using NetWebApi.Middlewares;
 
 
 namespace NetWebApi.Controllers
@@ -18,10 +19,12 @@ namespace NetWebApi.Controllers
     public class ClubController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly ILogger<ClubController> _logger;
 
-        public ClubController(IUnitOfWork unitOfWork)
+        public ClubController(IUnitOfWork unitOfWork, ILogger<ClubController> logger)
         {
             _unitOfWork = unitOfWork;
+            _logger = logger;
         }
 
 
@@ -34,6 +37,9 @@ namespace NetWebApi.Controllers
         //[AllowAnonymous]
         public async Task<ActionResult<List<ClubDto>>> GetAll()
         {
+
+            _logger.LogInformation("------------------------- Ejecutaste el GetAll -------------------------");
+
             var clubs = await _unitOfWork.ClubRepository.GetAll();
 
 
@@ -190,6 +196,20 @@ namespace NetWebApi.Controllers
                 }
             }
         }
+
+        [HttpGet("force-error")]
+        public async Task<IActionResult> ForceError()
+        {
+            _logger.LogInformation("---------------------------- INFORMATION - Se ha producido una excepción: -------------------------------");
+            _logger.LogError("---------------------------- ERROR - Error Excepción no manejada -------------------------------");
+
+            await Task.Delay(100); // Simulación de operación asíncrona
+
+            //throw new Exception("Forzando un error 500 desde Swagger");
+            throw new NotImplementedException();
+        }
+
+
 
     }
 }
