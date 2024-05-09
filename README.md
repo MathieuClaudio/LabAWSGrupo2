@@ -16,9 +16,9 @@ git clone https://github.com/MathieuClaudio/LabAWSGrupo2.git
 
 ## Abrir en Visual Studio 2022
  - Modificar el string de conexión ubicado en el archiovo appsettings.json dentro de la carpeta WebApi según su instalación de SqlServer
- - Desde la consoloa del Administrador de paquetes ejecutar "Add-Migration Initial"
  - Luego ejecutar "Update-Database"
- - Nota: si tiene inconvenientes se sugiere borrar la carpeta Migrations dentro de la carpeta Repository y repetir los pasos anteriores.
+ - Nota: si tiene inconvenientes se sugiere borrar la carpeta Migrations dentro de la carpeta Repository, 
+ Desde la consoloa del Administrador de paquetes ejecutar "Add-Migration Initial" y repetir los pasos anteriores.
 
 ```
 
